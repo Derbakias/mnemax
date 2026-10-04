@@ -25,8 +25,8 @@ const styles = {
     'max-[400px]:grid-cols-[34px_66px_minmax(55px,1fr)_var(--stat-col)_var(--stat-col)_14px]',
   ],
   header: [
-    // Column headings a size down, so "Accuracy" fits a narrow column: the code font, as t-code gives it, at
-    // 11px (t-code's own size would win over it).
+    // Column headings a size down, so "Accuracy" fits a narrow column: the code font, as font-mono text-code
+    // give it, at 11px.
     'py-1.5 font-mono text-[11px] font-medium text-text-secondary',
     // Their headings are as wide as what's under them (↺1, four stream slots, five bolts) and centred, so each
     // sits over the middle of its symbols rather than of the wider column.
@@ -83,14 +83,14 @@ export function ModesTable({
         >
           {/* The mode's parts (↺N, streams, bolts) become the row's first three cells, at the start of each. */}
           <ModeBadge mode={m.mode} aligned className="contents *:justify-self-start" />
-          <Count className="t-code" value={m.rounds.length} label="rounds" />
-          <span className="t-code" style={{ color: accuracyColor(m.recentAccuracy, theme) }}>
+          <Count className="font-mono text-code" value={m.rounds.length} label="rounds" />
+          <span className="font-mono text-code" style={{ color: accuracyColor(m.recentAccuracy, theme) }}>
             {Math.round(m.recentAccuracy)}%
           </span>
-          <span className={cn('t-code', styles.mastered)} title={m.mastered ? 'Mastered' : undefined}>
+          <span className={cn('font-mono text-code', styles.mastered)} title={m.mastered ? 'Mastered' : undefined}>
             {m.mastered && <Icon name="star-tight" />}
           </span>
-          <span className={cn('t-code', styles.best)}>{Math.round(m.bestAccuracy)}%</span>
+          <span className={cn('font-mono text-code', styles.best)}>{Math.round(m.bestAccuracy)}%</span>
         </button>
       ))}
     </div>

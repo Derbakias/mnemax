@@ -83,6 +83,27 @@
     'Spline Sans', Inter, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* The app's text sizes, each with its line height and weight: text-default, text-small and so on. Headings
+     (text-heading) are a step below text-subtitle, which is for big numbers. text-code keeps the line height
+     around it, and goes with font-mono. */
+  --text-default: 16px;
+  --text-default--line-height: 24px;
+  --text-default--font-weight: 500;
+  --text-small: 14px;
+  --text-small--line-height: 20px;
+  --text-small--font-weight: 500;
+  --text-subtitle: 24px;
+  --text-subtitle--line-height: 44px;
+  --text-subtitle--font-weight: 600;
+  --text-heading: 20px;
+  --text-heading--line-height: 32px;
+  --text-heading--font-weight: 600;
+  --text-title: 38px;
+  --text-title--line-height: 52px;
+  --text-title--font-weight: 600;
+  --text-code: 12px;
+  --text-code--font-weight: 500;
 }
 
 /* The grid loader's animations (src/components/ui/grid-loader.tsx). inline: the step one uses each cell's own
@@ -283,49 +304,6 @@
   html.scanning #root {
     visibility: hidden;
   }
-}
-
-/* ---------- Typography (ThemedText types) ---------- */
-
-.t-default {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 500;
-}
-.t-small {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-}
-.t-subtitle {
-  font-size: 24px;
-  line-height: 44px;
-  font-weight: 600;
-}
-/* Section and screen headings: a step below .t-subtitle, which stays for big numbers (stat cards etc.). */
-.t-heading {
-  font-size: 20px;
-  line-height: 32px;
-  font-weight: 600;
-}
-.t-title {
-  font-size: 38px;
-  line-height: 52px;
-  font-weight: 600;
-}
-.t-code {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-}
-.secondary {
-  color: var(--color-text-secondary);
-}
-.good {
-  color: var(--color-success);
-}
-.bad {
-  color: var(--color-danger);
 }
 
 /* ---------- Layout ---------- */

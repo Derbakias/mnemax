@@ -41,8 +41,8 @@ export function MatchSlider({
   return (
     <div className="mb-1 flex flex-col gap-0.5">
       <div className="row-between">
-        <span className="t-default">{STREAM_LABELS[stream]}</span>
-        <span className="t-code">{value}</span>
+        <span className="text-default">{STREAM_LABELS[stream]}</span>
+        <span className="font-mono text-code">{value}</span>
       </div>
       <Slider value={value} min={0} max={cap} step={1} onValueChange={onChange} />
     </div>

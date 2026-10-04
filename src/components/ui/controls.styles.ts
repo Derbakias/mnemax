@@ -15,13 +15,13 @@ export const switchStyles = [
 
 /**
  * A button with a coloured outline and text, sharing a row's width with the others in it. `base` goes with one
- * colour: `accent`, `danger`, `secondary` (with the `secondary` class for its grey text) or `primary`.
+ * colour: `accent`, `danger`, `secondary` (grey) or `primary`.
  */
 export const outlineButton = {
   base: ['flex-1 rounded-[14px] border-[1.5px] py-3 text-center', 'text-[16px]/6 font-medium disabled:opacity-50'],
   accent: 'border-accent text-accent',
   danger: 'border-danger text-danger',
-  secondary: 'border-background-selected',
+  secondary: 'border-background-selected text-text-secondary',
   // The one main action in a pairing card (Pair, New code): filled blue, so it stands apart from Cancel.
   primary: 'border-accent-fill bg-accent-fill text-on-accent',
   // A small one, only as wide as its word (Sync, Save).

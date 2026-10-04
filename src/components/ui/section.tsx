@@ -26,7 +26,7 @@ export function Section({
           data-section-header: InfoTip lines its icon up with the heading when it's in here. */}
       <div className="relative flex flex-wrap items-center justify-between gap-1" data-section-header>
         <div className="flex items-center gap-1">
-          <h2 className="t-heading">{title}</h2>
+          <h2 className="text-heading">{title}</h2>
           {info && <InfoTip label={title}>{info}</InfoTip>}
         </div>
         {action && <div className="flex items-center gap-1.5 whitespace-nowrap">{action}</div>}

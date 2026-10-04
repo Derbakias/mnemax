@@ -70,12 +70,12 @@ function SyncPanel({ active }: { active: boolean }) {
           {nameDraft == null ? (
             <div className="row-between">
               <div>
-                <div className="t-small secondary">{syncCopy.section.thisDevice}</div>
-                <div className="t-default">{status?.name}</div>
+                <div className="text-small text-text-secondary">{syncCopy.section.thisDevice}</div>
+                <div className="text-default">{status?.name}</div>
               </div>
               <button
                 type="button"
-                className="text-button t-small secondary"
+                className="text-button text-small text-text-secondary"
                 onClick={() => setNameDraft(status?.name ?? '')}
               >
                 Rename
@@ -83,7 +83,7 @@ function SyncPanel({ active }: { active: boolean }) {
             </div>
           ) : (
             <form className="flex flex-col gap-1.5" onSubmit={onRename}>
-              <label className="t-small secondary" htmlFor="sync-name">
+              <label className="text-small text-text-secondary" htmlFor="sync-name">
                 {syncCopy.section.renameLabel}
               </label>
               <div className="flex gap-2.5">
@@ -105,7 +105,7 @@ function SyncPanel({ active }: { active: boolean }) {
           <div className="stack-8">
             {peers.length > 0 ? (
               <>
-                <div className="t-small secondary">{syncCopy.section.pairedDevices}</div>
+                <div className="text-small text-text-secondary">{syncCopy.section.pairedDevices}</div>
                 {peers.map((peer) => (
                   <PeerRow
                     key={peer.key}
@@ -120,7 +120,7 @@ function SyncPanel({ active }: { active: boolean }) {
                 ))}
               </>
             ) : (
-              <p className="t-small secondary">{syncCopy.section.noPeers}</p>
+              <p className="text-small text-text-secondary">{syncCopy.section.noPeers}</p>
             )}
           </div>
 
@@ -148,7 +148,7 @@ function SyncPanel({ active }: { active: boolean }) {
           )}
 
           <label className="row-between cursor-pointer">
-            <span className="t-default">{syncCopy.section.autoSwitch}</span>
+            <span className="text-default">{syncCopy.section.autoSwitch}</span>
             <input
               type="checkbox"
               role="switch"
@@ -157,7 +157,7 @@ function SyncPanel({ active }: { active: boolean }) {
               onChange={(e) => setAutoSync(e.target.checked)}
             />
           </label>
-          {peers.length > 0 && <p className="t-small secondary">{reachText(listening, autoSync)}</p>}
+          {peers.length > 0 && <p className="text-small text-text-secondary">{reachText(listening, autoSync)}</p>}
         </div>
       )}
       {!usable && status == null && notice?.kind === 'error' && (
@@ -177,17 +177,17 @@ function SyncPanel({ active }: { active: boolean }) {
         <div className="flex flex-col gap-1">
           {notice.kind === 'error' ? (
             // An error is labelled, not only red.
-            <p className="t-small text-danger" role="alert">
+            <p className="text-small text-danger" role="alert">
               <strong>{syncCopy.section.errorLead}</strong> {notice.text}
             </p>
           ) : (
-            <p className="t-small secondary" role="status">
+            <p className="text-small text-text-secondary" role="status">
               {notice.text}
             </p>
           )}
           <button
             type="button"
-            className="text-button secondary self-end text-[12px]/4"
+            className="text-button text-text-secondary self-end text-[12px]/4"
             aria-label={notice.kind === 'error' ? 'Dismiss error' : 'Dismiss message'}
             onClick={dismiss}
           >

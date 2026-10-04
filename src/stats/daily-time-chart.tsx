@@ -21,7 +21,7 @@ const DAY_MS = 86400000;
 
 const styles = {
   stats:
-    't-small secondary flex flex-wrap justify-center gap-x-5 gap-y-1 [&_strong]:font-semibold [&_strong]:text-text',
+    'text-small text-text-secondary flex flex-wrap justify-center gap-x-5 gap-y-1 [&_strong]:font-semibold [&_strong]:text-text',
 };
 
 function minutesCeiling(maxMinutes: number): number {
@@ -207,7 +207,7 @@ export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: 
           className="flex items-center justify-center self-stretch text-center"
           style={{ height: DAILY_TIME_CHART_HEIGHT }}
         >
-          <span className="t-small secondary">{statsCopy.timePlayed.noPlayTime}</span>
+          <span className="text-small text-text-secondary">{statsCopy.timePlayed.noPlayTime}</span>
         </div>
       ) : (
         <UPlotChart key={zoom.chartKey} options={options} data={data} height={DAILY_TIME_CHART_HEIGHT} zoom={zoom} />

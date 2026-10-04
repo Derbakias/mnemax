@@ -26,7 +26,7 @@ const styles = {
 export function ModeBadge({ mode, aligned = false, className }: { mode: Mode; aligned?: boolean; className?: string }) {
   const level = SPEED_PRESETS.length - SPEED_PRESETS.findIndex((p) => p.id === mode.speed);
   return (
-    <span className={cn('t-code', styles.badge, className)} data-aligned={aligned} title={modeLabel(mode)}>
+    <span className={cn('font-mono text-code', styles.badge, className)} data-aligned={aligned} title={modeLabel(mode)}>
       <span className={cn(styles.part, styles.n)}>
         <Icon name="counter-clockwise" size={14} />
         {mode.nLevel}

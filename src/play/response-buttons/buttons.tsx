@@ -178,7 +178,7 @@ export function ResponseButtons({
       }}
     >
       <Icon name={STREAM_ICONS[stream]} />
-      <span className={cn(large ? 't-default' : 't-small', styles.label)}>{STREAM_LABELS[stream]}</span>
+      <span className={cn(large ? 'text-default' : 'text-small', styles.label)}>{STREAM_LABELS[stream]}</span>
       <kbd className={cn(styles.keyHint)}>{keyLabel(keys[stream])}</kbd>
     </button>
   );

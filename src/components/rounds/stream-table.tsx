@@ -35,8 +35,8 @@ export const streamTableStyles = {
     // are dashed out, in grey (not faded, which left the name too faint to read).
     'data-[off=true]:text-text-secondary',
   ],
-  // Grey words rather than a faded row, so the symbols keep their full colour. The code font, as t-code gives
-  // it, a size down so "Accuracy" fits a narrow column.
+  // Grey words rather than a faded row, so the symbols keep their full colour. The code font, as font-mono
+  // text-code give it, a size down so "Accuracy" fits a narrow column.
   header: 'py-1.5 font-mono text-[11px] font-medium text-text-secondary',
 };
 
@@ -56,7 +56,7 @@ const styles = {
 /** A stream's name, led by its icon from the Play screen's answer buttons. */
 export function StreamName({ stream }: { stream: StreamId }) {
   return (
-    <span className={cn('t-small', styles.name)}>
+    <span className={cn('text-small', styles.name)}>
       <Icon name={STREAM_ICONS[stream]} size={16} />
       <span className={cn(styles.nameText)}>{STREAM_LABELS[stream]}</span>
     </span>
@@ -66,7 +66,11 @@ export function StreamName({ stream }: { stream: StreamId }) {
 /** An answer's outcome as its symbol, in its colour: green for right answers, red for wrong ones. */
 export function OutcomeIcon({ outcome }: { outcome: StreamOutcome }) {
   return (
-    <span className={outcome === 'hit' || outcome === 'correctRejection' ? 'good inline-flex' : 'bad inline-flex'}>
+    <span
+      className={
+        outcome === 'hit' || outcome === 'correctRejection' ? 'text-success inline-flex' : 'text-danger inline-flex'
+      }
+    >
       <Icon name={OUTCOME_ICONS[outcome]} size={14} />
     </span>
   );

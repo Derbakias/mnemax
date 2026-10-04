@@ -77,7 +77,7 @@ export function DailyTargetChip({ loaded, todayMs }: { loaded: boolean; todayMs:
       underChip
       label="Daily target"
       title={playCopy.hud.dailyTarget.title}
-      chipClassName={reached ? 'good' : undefined}
+      chipClassName={reached ? 'text-success' : undefined}
       chip={
         <>
           <span className="inline-flex text-teal">
@@ -89,8 +89,8 @@ export function DailyTargetChip({ loaded, todayMs }: { loaded: boolean; todayMs:
     >
       <div className="flex w-[min(260px,calc(100vw-64px))] flex-col gap-2">
         <div className="row-between">
-          <span className="t-small secondary">{playCopy.hud.dailyTarget.title}</span>
-          <span className={reached ? 't-small good' : 't-small'}>{percent}%</span>
+          <span className="text-small text-text-secondary">{playCopy.hud.dailyTarget.title}</span>
+          <span className={reached ? 'text-small text-success' : 'text-small'}>{percent}%</span>
         </div>
         <div
           className="h-2.5 overflow-hidden rounded-[5px] bg-background-element"
@@ -184,8 +184,8 @@ export function SpeedBolts({ speed, onSelect }: { speed: SpeedId; onSelect?: (sp
 function TargetStat({ label, value, good = false }: { label: string; value: string; good?: boolean }) {
   return (
     <div className={cn(styles.targetStat)}>
-      <span className="t-small secondary">{label}</span>
-      <span className={good ? 't-default good' : 't-default'}>{value}</span>
+      <span className="text-small text-text-secondary">{label}</span>
+      <span className={good ? 'text-default text-success' : 'text-default'}>{value}</span>
     </div>
   );
 }

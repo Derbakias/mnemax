@@ -113,7 +113,7 @@ export function LevelChart({ history: allHistory, zoom }: { history: LevelPoint[
           className="flex items-center justify-center self-stretch text-center"
           style={{ height: LEVEL_CHART_HEIGHT }}
         >
-          <span className="t-small secondary">{statsCopy.noRoundsInRange}</span>
+          <span className="text-small text-text-secondary">{statsCopy.noRoundsInRange}</span>
         </div>
       )}
       <ChartLegend

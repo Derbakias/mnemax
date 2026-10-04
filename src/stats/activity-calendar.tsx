@@ -8,8 +8,8 @@ import { useTheme } from '@/lib/theme';
 import { cn } from '@/lib/cn';
 
 const styles = {
-  // A day letter beside each row of boxes, as tall as a box. The code font, as t-code gives it, a size down.
-  dayLabel: 'secondary h-[17px] text-center font-mono text-[10px]/[17px] font-medium',
+  // A day letter beside each row of boxes, as tall as a box. The code font, as font-mono text-code give it, a size down.
+  dayLabel: 'text-text-secondary h-[17px] text-center font-mono text-[10px]/[17px] font-medium',
   // The weeks scroll sideways, with no scrollbar showing.
   scroll: 'min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
   // Boxes touch; a border in the page colour separates them.
@@ -206,7 +206,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="t-small secondary">
+        <span className="text-small text-text-secondary">
           {shown
             ? `${formatDay(shown.date)} · ${shownCount} ${shownCount === 1 ? 'round' : 'rounds'}`
             : canHover
@@ -214,7 +214,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
               : statsCopy.activity.tapHint}
         </span>
         <div className="flex items-center gap-1">
-          <span className="t-small secondary">less</span>
+          <span className="text-small text-text-secondary">less</span>
           {[0, 1, 2, 3, 4].map((level) => (
             <span
               key={level}
@@ -225,7 +225,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
               }}
             />
           ))}
-          <span className="t-small secondary">more</span>
+          <span className="text-small text-text-secondary">more</span>
         </div>
       </div>
     </div>

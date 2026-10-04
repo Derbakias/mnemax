@@ -30,6 +30,19 @@ describe('cn', () => {
     expect(cn('text-text-secondary', 'text-sm')).toBe('text-text-secondary text-sm');
   });
 
+  it("knows the app's own text sizes", () => {
+    // A size and a colour are different things, so both stay.
+    expect(cn('text-small', 'text-text-secondary')).toBe('text-small text-text-secondary');
+    expect(cn('text-code', 'text-success')).toBe('text-code text-success');
+    // Two sizes: the last one wins, the app's own or Tailwind's.
+    expect(cn('text-small', 'text-heading')).toBe('text-heading');
+    expect(cn('text-small', 'text-sm')).toBe('text-sm');
+    expect(cn('text-sm', 'text-small')).toBe('text-small');
+    // A weight or line height next to a size: both stay.
+    expect(cn('text-small', 'font-semibold')).toBe('text-small font-semibold');
+    expect(cn('text-default', 'leading-4')).toBe('text-default leading-4');
+  });
+
   it('only merges classes under the same variant', () => {
     expect(cn('data-[active=true]:text-accent', 'data-[active=true]:text-text')).toBe('data-[active=true]:text-text');
     expect(cn('text-text', 'data-[active=true]:text-accent')).toBe('text-text data-[active=true]:text-accent');

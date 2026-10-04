@@ -120,7 +120,7 @@ export function InfoTip({ label, children }: { label: string; children: ReactNod
         <Icon name="information-circle-outline" size={18} />
       </button>
       {open && (
-        <div className={cn('t-small', styles.panel)} role="tooltip">
+        <div className={cn('text-small', styles.panel)} role="tooltip">
           {children}
         </div>
       )}

@@ -47,7 +47,7 @@ export function Count({ value, label, className }: { value: number; label: strin
         {short}
       </span>
       {open && (
-        <span className={cn('t-small', styles.panel)} role="tooltip">
+        <span className={cn('text-small', styles.panel)} role="tooltip">
           {exact}
         </span>
       )}

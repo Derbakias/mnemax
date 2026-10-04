@@ -13,7 +13,7 @@ const styles = {
   // round's in the history list stretched the page past the list's bottom.
   scroll: 'relative overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
   // Fills the width; the column widths below are minimums (narrow screens scroll sideways). The code font, as
-  // t-code gives it.
+  // font-mono text-code give it.
   table: ['w-full border-separate border-spacing-0 text-center whitespace-nowrap', 'font-mono text-[12px] font-medium'],
   heading: 'border-b border-table-rule px-0 py-[5px] font-bold',
   // Every other row on a grey band with rounded ends.
@@ -120,7 +120,7 @@ export function RoundDetailTable({ result, legend = true }: { result: RoundResul
           </table>
         </div>
       )}
-      <p className="t-small secondary">
+      <p className="text-small text-text-secondary">
         {roundsCopy.detail.footer(
           result.stopped ? roundsCopy.detail.stoppedAfter(result.trials.length) : TRIALS_PER_ROUND,
           s.nLevel,
@@ -140,7 +140,9 @@ export function OutcomeLegend({ inline = false }: { inline?: boolean }) {
       <LegendItem outcome="correctRejection" />
       <LegendItem outcome="miss" />
       <LegendItem outcome="falseAlarm" />
-      <span className="t-small secondary group-data-[inline=true]:basis-full">{roundsCopy.legendNote}</span>
+      <span className="text-small text-text-secondary group-data-[inline=true]:basis-full">
+        {roundsCopy.legendNote}
+      </span>
     </div>
   );
 }
@@ -149,7 +151,7 @@ function LegendItem({ outcome }: { outcome: StreamOutcome }) {
   return (
     <div className="flex items-center gap-1">
       <OutcomeIcon outcome={outcome} />
-      <span className="t-small secondary">{roundsCopy.outcomes[outcome]}</span>
+      <span className="text-small text-text-secondary">{roundsCopy.outcomes[outcome]}</span>
     </div>
   );
 }

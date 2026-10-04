@@ -111,7 +111,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
   if (rounds.length === 0 || !level || !selected) {
     return (
       <div className={cn(contentStyles.base, contentStyles.stats)}>
-        <p className="t-default secondary mt-10 text-center">{statsCopy.empty}</p>
+        <p className="text-default text-text-secondary mt-10 text-center">{statsCopy.empty}</p>
       </div>
     );
   }
@@ -125,7 +125,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
           value={level.current.toFixed(2)}
           sub={
             level.weekChange != null ? (
-              <span className={level.weekChange >= 0 ? 'good' : 'bad'}>
+              <span className={level.weekChange >= 0 ? 'text-success' : 'text-danger'}>
                 {level.weekChange >= 0 ? '▲ +' : '▼ '}
                 {level.weekChange.toFixed(2)} in 7 days
               </span>
@@ -138,7 +138,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
           value={level.best.toFixed(2)}
           sub={
             level.best - level.current < 0.005 ? (
-              <span className="good">At your best</span>
+              <span className="text-success">At your best</span>
             ) : (
               `${(level.best - level.current).toFixed(2)} above level`
             )
@@ -195,7 +195,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
                       }}
                     >
                       <ModeBadge mode={m.mode} aligned />
-                      <span className="t-code secondary">
+                      <span className="font-mono text-code text-text-secondary">
                         {m.rounds.length} {m.rounds.length === 1 ? 'round' : 'rounds'} · {shortDate(m.lastPlayed)}
                       </span>
                     </button>
@@ -204,7 +204,9 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
               )}
             </HudDropdown>
           </div>
-          {selectedTags.length > 0 && <span className="t-small secondary">{selectedTags.join(' · ')}</span>}
+          {selectedTags.length > 0 && (
+            <span className="text-small text-text-secondary">{selectedTags.join(' · ')}</span>
+          )}
         </div>
 
         <div className="panel panel-pad">
@@ -228,19 +230,19 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
             a.roundsPlayed > 0 ? (
               <div key={a.stream} className={cn(streamTableStyles.row)}>
                 <StreamName stream={a.stream} />
-                <span className="t-code" style={{ color: accuracyColor(a.accuracy * 100, theme) }}>
+                <span className="font-mono text-code" style={{ color: accuracyColor(a.accuracy * 100, theme) }}>
                   {Math.round(a.accuracy * 100)}%
                 </span>
-                <Count className="t-code good" value={a.hits} label="matched" />
-                <Count className="t-code bad" value={a.misses} label="missed" />
-                <Count className="t-code bad" value={a.falseAlarms} label="false matches" />
+                <Count className="font-mono text-code text-success" value={a.hits} label="matched" />
+                <Count className="font-mono text-code text-danger" value={a.misses} label="missed" />
+                <Count className="font-mono text-code text-danger" value={a.falseAlarms} label="false matches" />
               </div>
             ) : (
               <div key={a.stream} className={cn(streamTableStyles.row)} data-off>
                 <StreamName stream={a.stream} />
                 <span className="visually-hidden">not in this mode</span>
                 {[0, 1, 2, 3].map((i) => (
-                  <span key={i} className="t-code" aria-hidden>
+                  <span key={i} className="font-mono text-code" aria-hidden>
                     –
                   </span>
                 ))}
@@ -276,7 +278,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
         action={
           <button
             type="button"
-            className="text-button t-small"
+            className="text-button text-small"
             style={{ color: confirmClear ? theme.danger : theme.textSecondary }}
             onClick={onClear}
           >

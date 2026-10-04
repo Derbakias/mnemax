@@ -45,8 +45,8 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
     <div className="flex flex-col gap-1">
       <div className="row-between">
         <div>
-          <div className="t-default">{peer.name}</div>
-          <div className="t-small secondary">{syncCopy.peer.pairedOn(day(peer.pairedAt))}</div>
+          <div className="text-default">{peer.name}</div>
+          <div className="text-small text-text-secondary">{syncCopy.peer.pairedOn(day(peer.pairedAt))}</div>
           <PeerState peer={peer} />
         </div>
         <div className="flex shrink-0 items-center gap-3">
@@ -63,7 +63,7 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
           )}
           <button
             type="button"
-            className={confirming ? 'text-button t-small bad' : 'text-button t-small secondary'}
+            className={confirming ? 'text-button text-small text-danger' : 'text-button text-small text-text-secondary'}
             disabled={syncing != null}
             onClick={onForget}
           >
@@ -73,14 +73,14 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
       </div>
       {note && (
         <p
-          className={note.kind === 'error' ? 't-small text-danger' : 't-small secondary'}
+          className={note.kind === 'error' ? 'text-small text-danger' : 'text-small text-text-secondary'}
           role={note.kind === 'error' ? 'alert' : 'status'}
         >
           {note.text}
         </p>
       )}
       {note?.reconnect && onReconnect && (
-        <button type="button" className="text-button t-small text-accent" onClick={onReconnect}>
+        <button type="button" className="text-button text-small text-accent" onClick={onReconnect}>
           Reconnect
         </button>
       )}
@@ -97,7 +97,7 @@ function PeerState({ peer }: { peer: SyncPeer }) {
     // The device that showed the code doesn't start syncs (it has no Sync button): the other one does.
     text = syncCopy.peer.notSyncedWaits;
   }
-  return <div className="t-small secondary">{text}</div>;
+  return <div className="text-small text-text-secondary">{text}</div>;
 }
 
 function day(ms: number): string {

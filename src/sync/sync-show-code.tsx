@@ -41,10 +41,10 @@ export function ShowCode({
   if (ended) {
     return (
       <div className={cn('card', pairingStyles.card)}>
-        <p className="t-default" role="alert">
+        <p className="text-default" role="alert">
           {ended}
         </p>
-        <p className="t-small secondary">{syncCopy.showCode.whyShort}</p>
+        <p className="text-small text-text-secondary">{syncCopy.showCode.whyShort}</p>
         <div className="flex gap-2.5">
           {cancel}
           <button type="button" className={cn(outlineButton.base, outlineButton.primary)} onClick={onNewCode}>
@@ -67,7 +67,7 @@ export function ShowCode({
   };
   return (
     <div className={cn('card', pairingStyles.card)}>
-      <ol className={cn('t-small secondary', pairingStyles.steps)}>
+      <ol className={cn('text-small text-text-secondary', pairingStyles.steps)}>
         <li>{syncCopy.showCode.stepEnterCode}</li>
         <li>{syncCopy.showCode.stepScan}</li>
       </ol>
@@ -79,18 +79,25 @@ export function ShowCode({
       )}
       <div className={cn(pairingStyles.pairRow)}>
         <div>
-          <p className="t-small secondary">Address</p>
+          <p className="text-small text-text-secondary">Address</p>
           <p className={cn(styles.value)}>{shown?.address ?? '…'}</p>
         </div>
         <div>
-          <p className="t-small secondary">Code</p>
+          <p className="text-small text-text-secondary">Code</p>
           <p className={cn(styles.value)} aria-live="polite">
             {shown ? groupCode(shown.code) : '…'}
           </p>
         </div>
       </div>
-      <p className="t-small secondary text-center">{shown ? syncCopy.showCode.timeLeft(left) : '\u00a0'}</p>
-      <button type="button" className="text-button t-small secondary self-center" disabled={!shown} onClick={onCopy}>
+      <p className="text-small text-text-secondary text-center">
+        {shown ? syncCopy.showCode.timeLeft(left) : '\u00a0'}
+      </p>
+      <button
+        type="button"
+        className="text-button text-small text-text-secondary self-center"
+        disabled={!shown}
+        onClick={onCopy}
+      >
         {copied ? 'Copied' : 'Copy address and code'}
       </button>
       {cancel}

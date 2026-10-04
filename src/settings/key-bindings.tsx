@@ -69,7 +69,7 @@ export function KeyBindings({
     <div className="stack-8">
       {STREAM_IDS.map((stream) => (
         <div key={stream} className="row-between">
-          <span className="t-default inline-flex items-center gap-2.5">
+          <span className="text-default inline-flex items-center gap-2.5">
             <Icon name={STREAM_ICONS[stream]} size={20} />
             {STREAM_LABELS[stream]}
           </span>
@@ -87,7 +87,7 @@ export function KeyBindings({
           </button>
         </div>
       ))}
-      {warning && <p className="t-small bad">{warning}</p>}
+      {warning && <p className="text-small text-danger">{warning}</p>}
     </div>
   );
 }
