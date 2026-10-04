@@ -88,7 +88,7 @@ export function DailyTargetChip({ loaded, todayMs }: { loaded: boolean; todayMs:
       }
     >
       <div className="flex w-[min(260px,calc(100vw-64px))] flex-col gap-2">
-        <div className="row-between">
+        <div className="flex items-center justify-between gap-2">
           <span className="text-small text-text-secondary">{playCopy.hud.dailyTarget.title}</span>
           <span className={reached ? 'text-small text-success' : 'text-small'}>{percent}%</span>
         </div>

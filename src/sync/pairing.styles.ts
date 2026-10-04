@@ -1,6 +1,6 @@
 /** What the two pairing cards (ShowCode and EnterCode) share. */
 export const pairingStyles = {
-  // The card itself, on the `card` grey.
+  // The card itself; its grey and corners come from `card` (src/components/ui/surfaces.styles.ts).
   card: 'flex flex-col gap-2 p-3.5',
   // The steps at the top of a card, numbered.
   steps: 'm-0 flex flex-col gap-0.5 pl-5',

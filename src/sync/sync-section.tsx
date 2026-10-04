@@ -2,6 +2,7 @@ import { useEffect, useState, type SubmitEvent } from 'react';
 
 import { Section } from '../components/ui/section';
 import { outlineButton, switchStyles, textField } from '@/components/ui/controls.styles';
+import { panel } from '@/components/ui/surfaces.styles';
 import { syncCopy } from '@/copy/sync';
 import { SyncLog } from './sync-log';
 import { Pairing } from './sync-pairing';
@@ -66,16 +67,16 @@ function SyncPanel({ active }: { active: boolean }) {
   return (
     <Section title={syncCopy.section.title} info={syncCopy.section.info}>
       {usable && (
-        <div className="panel panel-pad stack-10">
+        <div className={cn(panel.base, panel.pad, 'flex flex-col gap-2.5 self-stretch')}>
           {nameDraft == null ? (
-            <div className="row-between">
+            <div className="flex items-center justify-between gap-2">
               <div>
                 <div className="text-small text-text-secondary">{syncCopy.section.thisDevice}</div>
                 <div className="text-default">{status?.name}</div>
               </div>
               <button
                 type="button"
-                className="text-button text-small text-text-secondary"
+                className="py-1 text-small text-text-secondary"
                 onClick={() => setNameDraft(status?.name ?? '')}
               >
                 Rename
@@ -102,7 +103,7 @@ function SyncPanel({ active }: { active: boolean }) {
             </form>
           )}
 
-          <div className="stack-8">
+          <div className="flex flex-col gap-2 self-stretch">
             {peers.length > 0 ? (
               <>
                 <div className="text-small text-text-secondary">{syncCopy.section.pairedDevices}</div>
@@ -147,7 +148,7 @@ function SyncPanel({ active }: { active: boolean }) {
             <Pairing how={pairing.how} hint={pairing.hint} active={active} onEnd={() => setPairing(null)} />
           )}
 
-          <label className="row-between cursor-pointer">
+          <label className="flex cursor-pointer items-center justify-between gap-2">
             <span className="text-default">{syncCopy.section.autoSwitch}</span>
             <input
               type="checkbox"
@@ -187,7 +188,7 @@ function SyncPanel({ active }: { active: boolean }) {
           )}
           <button
             type="button"
-            className="text-button text-text-secondary self-end text-[12px]/4"
+            className="py-1 text-text-secondary self-end text-[12px]/4"
             aria-label={notice.kind === 'error' ? 'Dismiss error' : 'Dismiss message'}
             onClick={dismiss}
           >

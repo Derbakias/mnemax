@@ -27,6 +27,7 @@ import { accuracyColor, useTheme } from '@/lib/theme';
 import { cn } from '@/lib/cn';
 import { styles } from '@/stats/stats-screen.styles';
 import { contentStyles } from '@/components/ui/content.styles';
+import { panel } from '@/components/ui/surfaces.styles';
 
 /** `onReady` fires once the saved rounds have loaded and the stats have been drawn with them. */
 export function StatsScreen({ onReady }: { onReady?: () => void }) {
@@ -159,7 +160,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
       </div>
 
       <Section title={statsCopy.level.title} action={<ChartZoomActions zoom={levelZoom} />} info={statsCopy.level.info}>
-        <div className="panel panel-pad">
+        <div className={cn(panel.base, panel.pad)}>
           <LevelChart history={history} zoom={levelZoom} />
         </div>
       </Section>
@@ -209,7 +210,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
           )}
         </div>
 
-        <div className="panel panel-pad">
+        <div className={cn(panel.base, panel.pad)}>
           <ProgressChart
             key={selected.mode.key}
             rounds={selected.rounds}
@@ -218,7 +219,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
           />
         </div>
 
-        <div className={cn('panel', streamTableStyles.table)}>
+        <div className={cn(panel.base, streamTableStyles.table)}>
           <div className={cn(streamTableStyles.row, streamTableStyles.header)}>
             <span>Stream</span>
             <AccuracyHeading />
@@ -240,7 +241,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
             ) : (
               <div key={a.stream} className={cn(streamTableStyles.row)} data-off>
                 <StreamName stream={a.stream} />
-                <span className="visually-hidden">not in this mode</span>
+                <span className="sr-only">not in this mode</span>
                 {[0, 1, 2, 3].map((i) => (
                   <span key={i} className="font-mono text-code" aria-hidden>
                     –
@@ -257,7 +258,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
       </Section>
 
       <Section title={statsCopy.activity.title} info={statsCopy.activity.info}>
-        <div className="panel panel-pad">
+        <div className={cn(panel.base, panel.pad)}>
           <ActivityCalendar rounds={rounds} />
         </div>
       </Section>
@@ -267,7 +268,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
         action={<ChartZoomActions zoom={timeZoom} />}
         info={statsCopy.timePlayed.info}
       >
-        <div className="panel panel-pad">
+        <div className={cn(panel.base, panel.pad)}>
           <DailyTimeChart rounds={rounds} zoom={timeZoom} />
         </div>
       </Section>
@@ -278,7 +279,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
         action={
           <button
             type="button"
-            className="text-button text-small"
+            className="py-1 text-small"
             style={{ color: confirmClear ? theme.danger : theme.textSecondary }}
             onClick={onClear}
           >
@@ -290,7 +291,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
           </button>
         }
       >
-        <div className="panel panel-pad">
+        <div className={cn(panel.base, panel.pad)}>
           <RoundHistoryList rounds={rounds} />
         </div>
       </Section>

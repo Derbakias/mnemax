@@ -2,6 +2,7 @@ import type { ReactNode, SubmitEvent } from 'react';
 
 import { outlineButton, textField } from '@/components/ui/controls.styles';
 import { Icon } from '@/components/ui/icon';
+import { card } from '@/components/ui/surfaces.styles';
 import { syncCopy } from '@/copy/sync';
 import { cn } from '@/lib/cn';
 import { pairingStyles } from '@/sync/pairing.styles';
@@ -20,8 +21,8 @@ const styles = {
     'w-full flex-none rounded-lg border bg-background px-1.5 py-2.5 font-mono text-[14px]/6',
     'focus:border-accent focus:outline-none',
   ],
-  // The × that closes the error, at its top right. `!`: the text-button class's own padding would win.
-  close: 'absolute top-0 right-0 flex p-px!',
+  // The × that closes the error, at its top right.
+  close: 'absolute top-0 right-0 flex p-px',
 };
 
 /**
@@ -64,7 +65,7 @@ export function EnterCode({
   cancel: ReactNode;
 }) {
   return (
-    <form className={cn('card', pairingStyles.card)} onSubmit={onSubmit}>
+    <form className={cn(card, pairingStyles.card)} onSubmit={onSubmit}>
       <ol className={cn('text-small text-text-secondary', pairingStyles.steps)}>
         <li>{hint ?? syncCopy.pairing.stepShowCode}</li>
         <li>{syncCopy.pairing.stepScan}</li>
@@ -123,7 +124,7 @@ export function EnterCode({
             </p>
             <button
               type="button"
-              className={cn('text-button text-text-secondary', styles.close)}
+              className={cn('text-text-secondary', styles.close)}
               aria-label="Close the error"
               onClick={onCloseError}
             >

@@ -104,7 +104,7 @@ export function LevelChart({ history: allHistory, zoom }: { history: LevelPoint[
   }, [history, trend, theme, zoom.setZoomed, zoom.reset, zoom.chartKey]);
 
   return (
-    <div className="stack-8">
+    <div className="flex flex-col gap-2 self-stretch">
       <RangeChips days={days} zoom={zoom} onPick={setDays} />
       {history.length > 0 ? (
         <UPlotChart key={zoom.chartKey} options={options} data={data} height={LEVEL_CHART_HEIGHT} zoom={zoom} />

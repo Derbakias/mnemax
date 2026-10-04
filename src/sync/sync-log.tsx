@@ -33,16 +33,12 @@ export function SyncLog({ start, lines, deviceName }: { start: number; lines: Lo
   };
   return (
     <div className="flex flex-col gap-1">
-      <div className="row-between">
-        <button
-          type="button"
-          className="text-button text-small text-text-secondary"
-          onClick={() => setShown((s) => !s)}
-        >
+      <div className="flex items-center justify-between gap-2">
+        <button type="button" className="py-1 text-small text-text-secondary" onClick={() => setShown((s) => !s)}>
           {shown ? 'Hide sync logs' : lines.length > 0 ? `Sync logs (${lines.length})` : 'Sync logs'}
         </button>
         {shown && (
-          <button type="button" className="text-button text-small text-text-secondary" onClick={onCopy}>
+          <button type="button" className="py-1 text-small text-text-secondary" onClick={onCopy}>
             {copied ? 'Copied' : 'Copy'}
           </button>
         )}

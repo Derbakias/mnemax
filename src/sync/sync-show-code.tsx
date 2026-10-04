@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { outlineButton } from '@/components/ui/controls.styles';
+import { card } from '@/components/ui/surfaces.styles';
 import { syncCopy } from '@/copy/sync';
 import { cn } from '@/lib/cn';
 import { pairingStyles } from '@/sync/pairing.styles';
@@ -40,7 +41,7 @@ export function ShowCode({
   const ended = showing.ended ?? (shown != null && left === 0 ? syncCopy.showCode.ranOut : null);
   if (ended) {
     return (
-      <div className={cn('card', pairingStyles.card)}>
+      <div className={cn(card, pairingStyles.card)}>
         <p className="text-default" role="alert">
           {ended}
         </p>
@@ -66,7 +67,7 @@ export function ShowCode({
     }
   };
   return (
-    <div className={cn('card', pairingStyles.card)}>
+    <div className={cn(card, pairingStyles.card)}>
       <ol className={cn('text-small text-text-secondary', pairingStyles.steps)}>
         <li>{syncCopy.showCode.stepEnterCode}</li>
         <li>{syncCopy.showCode.stepScan}</li>
@@ -94,7 +95,7 @@ export function ShowCode({
       </p>
       <button
         type="button"
-        className="text-button text-small text-text-secondary self-center"
+        className="py-1 text-small text-text-secondary self-center"
         disabled={!shown}
         onClick={onCopy}
       >

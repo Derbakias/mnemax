@@ -174,7 +174,7 @@ export function ProgressChart({
   };
 
   return (
-    <div className="stack-10">
+    <div className="flex flex-col gap-2.5 self-stretch">
       <div className={cn(chipStyles.row)}>
         <FilterChip label="Accuracy" active={metric === 'accuracy'} onPress={() => setMetric('accuracy')} />
         <FilterChip label="Reaction time" active={metric === 'reaction'} onPress={() => setMetric('reaction')} />

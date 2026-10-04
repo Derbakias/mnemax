@@ -1,7 +1,5 @@
-/* TODO: !important! Migrate everything to tailwind */
-
 /* Tailwind: its theme (the palette below) and its utility classes. Its base reset (Preflight) is left out
-   until the old CSS is gone, because it changes the look. */
+   for now, because it changes the look. */
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
@@ -218,8 +216,7 @@
 }
 
 /* Plain element styles. They sit in a layer because Tailwind's utilities do, and CSS outside any layer
-   always wins over CSS in one: left outside, these would beat a utility (p-2 on a button would do nothing).
-   The class styles below stay outside for now; they go as the components move to Tailwind. */
+   always wins over CSS in one: left outside, these would beat a utility (p-2 on a button would do nothing). */
 @layer base {
   :root {
     --tab-bar-height: 56px;
@@ -304,63 +301,4 @@
   html.scanning #root {
     visibility: hidden;
   }
-}
-
-/* ---------- Layout ---------- */
-
-.row-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-
-.card {
-  background: var(--color-background-element);
-  border-radius: 14px;
-}
-
-.stack-8 {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  gap: 8px;
-}
-.stack-10 {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  gap: 10px;
-}
-
-/* ---------- Stats ---------- */
-
-/* A raised panel: the Stats screen's cards, tables and charts. */
-.panel {
-  border-radius: 16px;
-  border: 1px solid var(--color-surface-border);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-surface);
-}
-.panel-pad {
-  padding: 14px;
-}
-@media (max-width: 399.98px) {
-  .panel-pad {
-    padding: 12px 10px;
-  }
-}
-
-.text-button {
-  padding: 4px 0;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }

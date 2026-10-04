@@ -43,7 +43,7 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
   return (
     // The device's row, then how the latest sync with it went.
     <div className="flex flex-col gap-1">
-      <div className="row-between">
+      <div className="flex items-center justify-between gap-2">
         <div>
           <div className="text-default">{peer.name}</div>
           <div className="text-small text-text-secondary">{syncCopy.peer.pairedOn(day(peer.pairedAt))}</div>
@@ -63,7 +63,7 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
           )}
           <button
             type="button"
-            className={confirming ? 'text-button text-small text-danger' : 'text-button text-small text-text-secondary'}
+            className={confirming ? 'py-1 text-small text-danger' : 'py-1 text-small text-text-secondary'}
             disabled={syncing != null}
             onClick={onForget}
           >
@@ -80,7 +80,7 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
         </p>
       )}
       {note?.reconnect && onReconnect && (
-        <button type="button" className="text-button text-small text-accent" onClick={onReconnect}>
+        <button type="button" className="py-1 text-small text-accent" onClick={onReconnect}>
           Reconnect
         </button>
       )}

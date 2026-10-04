@@ -1,5 +1,6 @@
 import { Count } from '@/stats/count';
 import { Icon } from '@/components/ui/icon';
+import { panel } from '@/components/ui/surfaces.styles';
 import { ModeBadge } from '@/stats/mode-badge';
 import type { ModeSummary } from '@/stats/levels';
 import { accuracyColor, type Theme } from '@/lib/theme';
@@ -63,7 +64,7 @@ export function ModesTable({
   theme: Theme;
 }) {
   return (
-    <div className={cn('panel', styles.table)}>
+    <div className={cn(panel.base, styles.table)}>
       <div className={cn(styles.row, styles.header)}>
         <span>N</span>
         <span>Streams</span>

@@ -199,7 +199,7 @@ export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: 
   }, [days, theme, zoom.setZoomed, zoom.reset, zoom.chartKey]);
 
   return (
-    <div className="stack-10">
+    <div className="flex flex-col gap-2.5 self-stretch">
       <RangeChips days={rangeDays} zoom={zoom} onPick={setRangeDays} />
 
       {played.length === 0 ? (

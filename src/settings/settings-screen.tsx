@@ -107,7 +107,7 @@ export function SettingsScreen({ active }: { active: boolean }) {
     <div className={cn(contentStyles.base, contentStyles.settings)}>
       <Section title={settingsCopy.streams.title} info={settingsCopy.streams.info}>
         {STREAM_IDS.map((stream) => (
-          <label key={stream} className="row-between cursor-pointer">
+          <label key={stream} className="flex cursor-pointer items-center justify-between gap-2">
             <span className="text-default">{STREAM_LABELS[stream]}</span>
             <input
               type="checkbox"
@@ -180,7 +180,7 @@ export function SettingsScreen({ active }: { active: boolean }) {
       </Section>
 
       <Section title={settingsCopy.tutorial.title} info={settingsCopy.tutorial.info}>
-        <label className="row-between cursor-pointer">
+        <label className="flex cursor-pointer items-center justify-between gap-2">
           <span className="text-default">{settingsCopy.tutorial.historySwitch}</span>
           <input
             type="checkbox"
@@ -190,7 +190,7 @@ export function SettingsScreen({ active }: { active: boolean }) {
             onChange={(e) => setTutorialAid('tutorialHistory', e.target.checked)}
           />
         </label>
-        <label className="row-between cursor-pointer">
+        <label className="flex cursor-pointer items-center justify-between gap-2">
           <span className="text-default">{settingsCopy.tutorial.solutionSwitch}</span>
           <input
             type="checkbox"
@@ -271,7 +271,7 @@ export function SettingsScreen({ active }: { active: boolean }) {
           <Icon name="checkmark-circle" size={22} />
         </span>
       </button>
-      <span className="visually-hidden" role="status">
+      <span className="sr-only" role="status">
         {resetDone ? settingsCopy.reset.done : ''}
       </span>
 

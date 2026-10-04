@@ -40,7 +40,7 @@ export function MatchSlider({
 }) {
   return (
     <div className="mb-1 flex flex-col gap-0.5">
-      <div className="row-between">
+      <div className="flex items-center justify-between gap-2">
         <span className="text-default">{STREAM_LABELS[stream]}</span>
         <span className="font-mono text-code">{value}</span>
       </div>

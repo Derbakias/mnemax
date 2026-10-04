@@ -1,4 +1,5 @@
 import { AccuracyHeading, OutcomeHeading, StreamName, streamTableStyles } from './stream-table';
+import { card } from '@/components/ui/surfaces.styles';
 import { roundsCopy } from '@/copy/rounds';
 import { summarizeRound } from '@/game/scoring';
 import type { RoundResult } from '@/game/types';
@@ -24,8 +25,7 @@ export function RoundSummaryCard({ result, compact = false }: RoundSummaryCardPr
   }
 
   return (
-    // `card` is still styled in index.css (its grey and corners), shared with other screens.
-    <div className="card flex flex-col gap-2 self-stretch p-3.5">
+    <div className={cn(card, 'flex flex-col gap-2 self-stretch p-3.5')}>
       <div className="flex items-baseline gap-2.5">
         <span className="text-subtitle" style={{ color: accuracyColor(pct, theme) }}>
           {pct}%

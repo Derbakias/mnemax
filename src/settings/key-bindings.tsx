@@ -66,9 +66,9 @@ export function KeyBindings({
   }, [listening, onChange]);
 
   return (
-    <div className="stack-8">
+    <div className="flex flex-col gap-2 self-stretch">
       {STREAM_IDS.map((stream) => (
-        <div key={stream} className="row-between">
+        <div key={stream} className="flex items-center justify-between gap-2">
           <span className="text-default inline-flex items-center gap-2.5">
             <Icon name={STREAM_ICONS[stream]} size={20} />
             {STREAM_LABELS[stream]}

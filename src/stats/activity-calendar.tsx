@@ -152,7 +152,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
   }, [weeks]);
 
   return (
-    <div className="stack-8">
+    <div className="flex flex-col gap-2 self-stretch">
       <YearDropdown
         years={years}
         value={year}

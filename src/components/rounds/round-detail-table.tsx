@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn';
 
 const styles = {
   // Scrolls sideways on narrow screens, with no scrollbar showing. Relative, so the screen-reader-only text in
-  // the cells (.visually-hidden) is placed and clipped in here: placed against the whole screen, an opened
+  // the cells (sr-only) is placed and clipped in here: placed against the whole screen, an opened
   // round's in the history list stretched the page past the list's bottom.
   scroll: 'relative overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
   // Fills the width; the column widths below are minimums (narrow screens scroll sideways). The code font, as
@@ -54,7 +54,7 @@ function Shown({ stream, trial }: { stream: StreamId; trial: TrialRecord }) {
         style={{ backgroundColor: COLOR_PALETTE[index] }}
         aria-hidden
       />
-      <span className="visually-hidden">{COLOR_NAMES[index]}</span>
+      <span className="sr-only">{COLOR_NAMES[index]}</span>
     </>
   );
 }
@@ -106,7 +106,7 @@ export function RoundDetailTable({ result, legend = true }: { result: RoundResul
                           {outcome && (
                             <>
                               <OutcomeIcon outcome={outcome} />
-                              <span className="visually-hidden">{roundsCopy.outcomes[outcome]}</span>
+                              <span className="sr-only">{roundsCopy.outcomes[outcome]}</span>
                             </>
                           )}
                         </div>

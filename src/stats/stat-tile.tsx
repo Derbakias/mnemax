@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Icon, type IconName } from '@/components/ui/icon';
+import { panel } from '@/components/ui/surfaces.styles';
 import { cn } from '@/lib/cn';
 
 // A headline number: its icon in a blue bubble, the label under it, then the value. The label gets the tile's
@@ -35,7 +36,7 @@ export function StatTile({
   sub?: ReactNode;
 }) {
   return (
-    <div className={cn('panel', styles.tile)}>
+    <div className={cn(panel.base, styles.tile)}>
       <div className="flex min-w-0 flex-col items-start gap-2">
         <span className={cn(styles.icon)}>
           <Icon name={icon} size={18} />
