@@ -1,4 +1,4 @@
-import { BLANK_MS, COLOR_PALETTE, COLOR_SHADES } from '@/config/game';
+import { BLANK_MS, COLOR_NAMES, COLOR_PALETTE, COLOR_SHADES } from '@/config/game';
 import { clampSettings, defaultSettings, maxMatchesFor, speedOf, speedPreset, stimulusVisibleMs } from '../rules';
 
 describe('stimulusVisibleMs', () => {
@@ -58,8 +58,20 @@ describe('clampSettings', () => {
   });
 });
 
-describe('COLOR_SHADES', () => {
-  it('has a shade for every palette colour', () => {
+describe('COLOR_PALETTE', () => {
+  // Saved rounds store a colour as its index, so the count must not change.
+  it('has exactly six colours', () => {
+    expect(COLOR_PALETTE).toHaveLength(6);
+  });
+
+  it('has a name and a shade for every colour', () => {
+    expect(COLOR_NAMES).toHaveLength(COLOR_PALETTE.length);
     expect(COLOR_SHADES).toHaveLength(COLOR_PALETTE.length);
+  });
+
+  it('writes every colour as a 6-digit hex', () => {
+    for (const hex of [...COLOR_PALETTE, ...COLOR_SHADES]) {
+      expect(hex).toMatch(/^#[0-9A-F]{6}$/i);
+    }
   });
 });

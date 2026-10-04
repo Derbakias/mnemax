@@ -43,7 +43,7 @@ interface TrialHistoryProps {
   showLetters: boolean;
 }
 
-/** Dark text on the light palette colours (yellow), white on the rest. */
+/** Dark text on the light palette colours (yellow and sky blue), white on the rest. */
 function textOn(hex: string): string {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
   return 0.299 * r + 0.587 * g + 0.114 * b > 170 ? '#000000' : '#ffffff';

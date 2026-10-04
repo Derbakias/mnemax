@@ -25,16 +25,18 @@ export const POSITION_ARROWS: Record<number, string> = {
 // in the same cell still reads as a new trial. Difficulty comes from the trial speed.
 export const BLANK_MS = 400;
 
-// TODO: Find better colour combinations
-export const COLOR_PALETTE = ['#E53935', '#1E88E5', '#43A047', '#FDD835', '#8E24AA', '#FB8C00'];
+// The six game colours, picked so each pair stays easy to tell apart for colour-blind vision too
+// (red-weak, green-weak, blue-weak). Based on the Okabe-Ito set.
+export const COLOR_PALETTE = ['#FE4614', '#33DCFF', '#00A96F', '#F0E442', '#1B6BAA', '#D085AA'];
 /** Each palette colour's name, for screen readers where a swatch shows it. */
-export const COLOR_NAMES = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+export const COLOR_NAMES = ['vermilion', 'sky blue', 'green', 'yellow', 'blue', 'pink'];
 /**
  * A deeper shade of each palette colour (and of the neutral one), for the lit box's 3D edge and the digit's
  * shadow. Hand-picked rather than the colour darkened with black, which turns yellow a muddy olive: yellow
- * gets amber instead.
+ * gets amber instead. Sky blue and yellow get deeper shades than the rest: the lit box's coloured shadow is
+ * drawn in the shade, and a bright one glared under the box.
  */
-export const COLOR_SHADES = ['#B71C1C', '#1565C0', '#2E7D32', '#F9A825', '#6A1B9A', '#E65100'];
+export const COLOR_SHADES = ['#C93103', '#128CAD', '#098356', '#D08C00', '#034B7E', '#AC6488'];
 export const NEUTRAL_SHADE = '#1976D2';
 
 export const LETTERS = ['C', 'H', 'K', 'L', 'Q', 'R', 'S', 'T'];
