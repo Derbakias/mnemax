@@ -32,8 +32,8 @@ export function addTouchControls(u: uPlot, over: HTMLElement, ctx: TouchContext)
   // the mouse does: sideways, and up and down too once it has moved a little that way (where panning
   // moves the y axes). Two fingers pinch to zoom the x axis around them and move it as they move. A
   // double tap resets. Until the chart is zoomed, vertical swipes stay with the page (`touch-action`
-  // in CSS), so an untouched chart never traps the scroll. The y axes keep fitting the data in view
-  // until moved.
+  // in PANNABLE, zoom.ts), so an untouched chart never traps the scroll. The y axes keep fitting the
+  // data in view until moved.
   const touches = new Map<number, { x: number; y: number }>();
   // done: a pinch lost a finger; the one left does nothing until it lifts too, so nothing jumps to it.
   let mode: 'scrub' | 'pan' | 'pinch' | 'done' = 'pan';

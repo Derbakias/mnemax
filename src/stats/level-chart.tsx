@@ -109,7 +109,10 @@ export function LevelChart({ history: allHistory, zoom }: { history: LevelPoint[
       {history.length > 0 ? (
         <UPlotChart key={zoom.chartKey} options={options} data={data} height={LEVEL_CHART_HEIGHT} zoom={zoom} />
       ) : (
-        <div className="chart-box" style={{ height: LEVEL_CHART_HEIGHT }}>
+        <div
+          className="flex items-center justify-center self-stretch text-center"
+          style={{ height: LEVEL_CHART_HEIGHT }}
+        >
           <span className="t-small secondary">{statsCopy.noRoundsInRange}</span>
         </div>
       )}

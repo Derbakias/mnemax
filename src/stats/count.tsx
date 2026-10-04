@@ -1,5 +1,14 @@
 import { useHoverOrTap } from '../components/ui/info-tip';
 import { formatCount } from '@/lib/format';
+import { cn } from '@/lib/cn';
+
+const styles = {
+  // The exact number, under the count and growing to the left (these counts sit in the right-hand columns).
+  panel: [
+    'absolute top-[calc(100%+6px)] -right-2 z-20 px-2.5 py-1.5 whitespace-nowrap',
+    'rounded-[10px] border border-background-selected bg-background text-text shadow-(--shadow-popover)',
+  ],
+};
 
 /**
  * A count kept short for a narrow column (1.2K, 12K…). When shortened, hovering or tapping it shows the
@@ -15,11 +24,11 @@ export function Count({ value, label, className }: { value: number; label: strin
   const exact = `${value.toLocaleString()} ${label}`;
   // Not a <button>: in the modes table it sits inside a row that is one. A tap here shouldn't pick the row.
   return (
-    <span className="count-tip" ref={rootRef} {...hoverHandlers}>
+    <span className="relative inline-flex justify-center" ref={rootRef} {...hoverHandlers}>
       <span
         role="button"
         tabIndex={0}
-        className={className ? `count-tip-value ${className}` : 'count-tip-value'}
+        className={cn('cursor-pointer', className)}
         aria-label={exact}
         aria-expanded={open}
         onClick={(e) => {
@@ -38,7 +47,7 @@ export function Count({ value, label, className }: { value: number; label: strin
         {short}
       </span>
       {open && (
-        <span className="count-tip-panel t-small" role="tooltip">
+        <span className={cn('t-small', styles.panel)} role="tooltip">
           {exact}
         </span>
       )}

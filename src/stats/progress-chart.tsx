@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import type uPlot from 'uplot';
 
 import { ChartLegend } from './chart-legend';
-import { RangeChips, UPlotChart } from '@/components/charts/uplot-chart';
+import { RangeChips, UPlotChart, chipStyles } from '@/components/charts/uplot-chart';
 import { axisStyle, roundDateAxis } from '@/components/charts/axes';
 import { dotSeries, fittedRange, lineSeries, withAlpha } from '@/components/charts/series';
 import { tooltipPlugin } from '@/components/charts/tooltip';
@@ -22,6 +22,15 @@ import { computeRoundPoints, exponentialAverage } from '@/lib/stats';
 import { improvementRate, type PerfectEstimate } from '@/stats/improvement';
 import { useTheme } from '@/lib/theme';
 import { rangeStart, useToday } from '@/stats/use-today';
+import { cn } from '@/lib/cn';
+
+const styles = {
+  // The By mode legend has a line per stream's key too, so on phones it takes one line or two depending on
+  // the mode: room is kept for two, so picking another mode doesn't move what's below.
+  legend: 'flex flex-col justify-center max-[600px]:min-h-11',
+  // A line kept even when there's no estimate to show, so picking another mode doesn't move what's below.
+  footer: 'flex min-h-5 flex-wrap items-center justify-center gap-1.5 text-center',
+};
 
 type Metric = 'accuracy' | 'reaction';
 /** Every line in the legend can be hidden: the round dots, the overall average and each stream. */
@@ -166,7 +175,7 @@ export function ProgressChart({
 
   return (
     <div className="stack-10">
-      <div className="chip-row">
+      <div className={cn(chipStyles.row)}>
         <FilterChip label="Accuracy" active={metric === 'accuracy'} onPress={() => setMetric('accuracy')} />
         <FilterChip label="Reaction time" active={metric === 'reaction'} onPress={() => setMetric('reaction')} />
       </div>
@@ -182,14 +191,17 @@ export function ProgressChart({
           zoom={zoom}
         />
       ) : (
-        <div className="chart-box" style={{ height: PROGRESS_CHART_HEIGHT }}>
+        <div
+          className="flex items-center justify-center self-stretch text-center"
+          style={{ height: PROGRESS_CHART_HEIGHT }}
+        >
           <span className="t-small secondary">
             {metric === 'reaction' && points.length > 0 ? statsCopy.byMode.noReactionTimes : statsCopy.noRoundsInRange}
           </span>
         </div>
       )}
 
-      <div className="progress-legend">
+      <div className={cn(styles.legend)}>
         {hasData && (
           <ChartLegend
             items={[
@@ -219,7 +231,7 @@ export function ProgressChart({
         )}
       </div>
 
-      <div className="chart-footer">
+      <div className={cn(styles.footer)}>
         {points.length >= RATE_MIN_ROUNDS && metric === 'accuracy' && rate.toPerfect && (
           <PerfectEstimateLabel estimate={rate.toPerfect} />
         )}
@@ -257,7 +269,7 @@ function formatPlayTime(hours: number): string {
 
 function FilterChip({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) {
   return (
-    <button type="button" className={active ? 'filter-chip t-code on' : 'filter-chip t-code'} onClick={onPress}>
+    <button type="button" className={cn(chipStyles.chip)} data-on={active} onClick={onPress}>
       {label}
     </button>
   );
