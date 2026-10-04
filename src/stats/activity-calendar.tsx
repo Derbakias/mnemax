@@ -5,6 +5,16 @@ import { statsCopy } from '@/copy/stats';
 import type { RoundResult } from '@/game/types';
 import { DATE_LOCALE } from '@/config/stats';
 import { useTheme } from '@/lib/theme';
+import { cn } from '@/lib/cn';
+
+const styles = {
+  // A day letter beside each row of boxes, as tall as a box. The code font, as t-code gives it, a size down.
+  dayLabel: 'secondary h-[17px] text-center font-mono text-[10px]/[17px] font-medium',
+  // The weeks scroll sideways, with no scrollbar showing.
+  scroll: 'min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+  // Boxes touch; a border in the page colour separates them.
+  cell: 'block size-[17px] rounded-[3px] border border-background',
+};
 
 function dayKey(date: Date): string {
   const y = date.getFullYear();
@@ -153,29 +163,29 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
         }}
       />
 
-      <div className="calendar-row">
-        <div className="calendar-day-labels">
+      <div className="flex self-stretch">
+        <div className="flex w-3.5 shrink-0 flex-col">
           {statsCopy.activity.dayLetters.map((letter, i) => (
-            <span key={`${letter}-${i}`} className="t-code secondary">
+            <span key={`${letter}-${i}`} className={cn(styles.dayLabel)}>
               {letter}
             </span>
           ))}
         </div>
-        <div ref={scrollRef} className="calendar-scroll" onPointerLeave={() => setHovered(null)}>
-          <div className="calendar-weeks">
+        <div ref={scrollRef} className={cn(styles.scroll)} onPointerLeave={() => setHovered(null)}>
+          <div className="flex w-max">
             {weeks.map((week, wi) => (
-              <div key={wi} className="calendar-week">
+              <div key={wi} className="flex flex-col">
                 {week.map((day) => {
                   const key = dayKey(day);
                   if (key > todayKey) {
-                    return <span key={key} className="calendar-cell empty" />;
+                    return <span key={key} className={cn(styles.cell)} />;
                   }
                   const count = countsByDay.get(key) ?? 0;
                   return (
                     <button
                       key={key}
                       type="button"
-                      className="calendar-cell"
+                      className={cn(styles.cell)}
                       aria-label={`${formatDay(day)}: ${count} rounds`}
                       // Clicking pins the day; clicking the pinned day again unpins it.
                       onClick={() => setSelected((sel) => (sel?.key === key ? null : { key, date: day }))}
@@ -195,7 +205,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
         </div>
       </div>
 
-      <div className="calendar-footer">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="t-small secondary">
           {shown
             ? `${formatDay(shown.date)} · ${shownCount} ${shownCount === 1 ? 'round' : 'rounds'}`
@@ -203,12 +213,12 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
               ? statsCopy.activity.hoverHint
               : statsCopy.activity.tapHint}
         </span>
-        <div className="calendar-legend">
+        <div className="flex items-center gap-1">
           <span className="t-small secondary">less</span>
           {[0, 1, 2, 3, 4].map((level) => (
             <span
               key={level}
-              className="calendar-cell legend"
+              className={cn(styles.cell, 'size-3')}
               style={{
                 backgroundColor: level === 0 ? theme.backgroundSelected : theme.accent,
                 opacity: level === 0 ? 1 : levelOpacity(level),

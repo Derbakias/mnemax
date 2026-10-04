@@ -157,7 +157,8 @@ export function HudDropdown({
         {chip}
       </button>
       {open && (
-        // `hud-popover` has no look of its own: it's the name the Stats mode picker's CSS uses to place it.
+        // `hud-popover` has no look of its own: it's the name the Stats mode picker uses to place it
+        // (src/stats/stats-screen.styles.ts).
         <div
           ref={panelRef}
           className={cn('hud-popover', styles.popover)}

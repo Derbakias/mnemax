@@ -17,15 +17,15 @@ import { AccuracyHeading, OutcomeHeading, StreamName, streamTableStyles } from '
 import { ChartZoomActions } from '@/components/charts/uplot-chart';
 import { useChartZoom } from '@/components/charts/zoom';
 import type { RoundResult } from '@/game/types';
-import { DATE_LOCALE } from '@/config/stats';
 import { levelHistory, levelSummary, modeOf, summarizeModes } from '@/stats/levels';
 import { useSettingsStore } from '@/stores/settings';
 import { aggregateStreams, collectionSummary } from '@/lib/stats';
-import { formatDuration } from '@/lib/format';
+import { formatDuration, shortDate } from '@/lib/format';
 import { clearRounds, loadRounds, onRoundsChanged } from '@/lib/storage';
 import { useSyncStore } from '@/stores/sync';
 import { accuracyColor, useTheme } from '@/lib/theme';
 import { cn } from '@/lib/cn';
+import { styles } from '@/stats/stats-screen.styles';
 
 /** `onReady` fires once the saved rounds have loaded and the stats have been drawn with them. */
 export function StatsScreen({ onReady }: { onReady?: () => void }) {
@@ -110,14 +110,14 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
   if (rounds.length === 0 || !level || !selected) {
     return (
       <div className="content stats">
-        <p className="t-default secondary empty-state">{statsCopy.empty}</p>
+        <p className="t-default secondary mt-10 text-center">{statsCopy.empty}</p>
       </div>
     );
   }
 
   return (
     <div className="content stats">
-      <div className="summary-row">
+      <div className={cn(styles.summary)}>
         <StatTile
           icon="trending-up-outline"
           label="Level"
@@ -168,8 +168,8 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
         action={<ChartZoomActions zoom={modeZoom} />}
         info={statsCopy.byMode.info}
       >
-        <div className="mode-picker-row">
-          <div className="mode-picker">
+        <div className="flex items-center gap-2.5">
+          <div className={cn(styles.picker)}>
             <HudDropdown
               label="Mode"
               chipClassName="border border-surface-border bg-surface shadow-(--shadow-chip)"
@@ -181,12 +181,13 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
               }
             >
               {(close) => (
-                <div className="mode-options">
+                <div className={cn(styles.options)}>
                   {modes.map((m) => (
                     <button
                       key={m.mode.key}
                       type="button"
-                      className={m.mode.key === selected.mode.key ? 'mode-option on' : 'mode-option'}
+                      className={cn(styles.option)}
+                      data-on={m.mode.key === selected.mode.key}
                       onClick={() => {
                         setSelectedKey(m.mode.key);
                         close();
@@ -292,8 +293,4 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
       </Section>
     </div>
   );
-}
-
-function shortDate(time: number): string {
-  return new Date(time).toLocaleDateString(DATE_LOCALE, { day: 'numeric', month: 'short' });
 }

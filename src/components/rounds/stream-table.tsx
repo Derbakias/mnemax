@@ -12,7 +12,7 @@ import { cn } from '@/lib/cn';
  * round's table (see below). data-off on a row: a stream the mode doesn't use.
  */
 export const streamTableStyles = {
-  // Every number column is --stat-col wide, as in the Stats screen's modes table (.mode-table in index.css), so
+  // Every number column is --stat-col wide, as in the Stats screen's modes table (src/stats/modes-table.tsx), so
   // the two tables line up alike; small phones narrow the columns, leaving the stream names room.
   table: [
     'group flex flex-col p-1.5',
