@@ -32,6 +32,7 @@ export const outlineButton = {
 export const textField = [
   'min-w-0 flex-1 rounded-xl border-[1.5px] border-background-selected bg-background-element',
   'px-3 py-2.5 text-[16px]/6 select-text',
-  // The example text in an empty box: the browser's own grey, not the reset's faded text colour.
-  'placeholder:[color:revert]',
+  // The example text in an empty box: the browser's own grey, as before Tailwind's reset (Firefox makes it grey
+  // by fading it, so its fading comes back too).
+  'placeholder:[color:revert] placeholder:[opacity:revert]',
 ];
