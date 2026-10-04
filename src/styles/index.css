@@ -1,8 +1,7 @@
-/* Tailwind: its theme (the palette below) and its utility classes. Its base reset (Preflight) is left out
-   for now, because it changes the look. */
-@layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
+/* Tailwind: its theme (the palette below), its base reset (Preflight: no browser margins, borders or list
+   bullets, and the like) and its utility classes. Our own plain element styles (@layer base, at the bottom)
+   come after the reset, so where both set something, ours wins. */
+@import 'tailwindcss';
 
 /* The palette: the one place the app's colours are set. src/lib/theme.ts reads them from here for the
    colours drawn in JS (the charts, accuracy colours). static: every value is always written out, even one
@@ -215,8 +214,9 @@
   }
 }
 
-/* Plain element styles. They sit in a layer because Tailwind's utilities do, and CSS outside any layer
-   always wins over CSS in one: left outside, these would beat a utility (p-2 on a button would do nothing). */
+/* Plain element styles, on top of Tailwind's reset. They sit in a layer because Tailwind's utilities do, and
+   CSS outside any layer always wins over CSS in one: left outside, these would beat a utility (p-2 on a button
+   would do nothing). */
 @layer base {
   :root {
     --tab-bar-height: 56px;
@@ -225,24 +225,21 @@
     color-scheme: light dark;
   }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
   html,
   body,
   #root {
     height: 100%;
-    margin: 0;
   }
 
   /* An app, not a page: no pinch or double-tap zoom (it also blew up the charts). Scrolling still works, and
      touch-action narrows down the tree, so nothing inside can turn zoom back on. The viewport meta says the
-     same for webviews that go by that. */
+     same for webviews that go by that.
+     Line spacing: Tailwind's reset spaces lines at 1.5 times the text size; here they keep the font's own
+     spacing, as before the reset. Much of the text, in many files, sets no line spacing of its own, so one
+     rule here is smaller and safer than one on each. */
   html {
     touch-action: pan-x pan-y;
+    line-height: normal;
   }
 
   body {
@@ -251,23 +248,12 @@
     font-family: var(--font-display);
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
     user-select: none;
     -webkit-user-select: none;
   }
 
-  button,
-  select,
-  input {
-    font: inherit;
-    color: inherit;
-  }
-
   button {
-    background: none;
-    border: none;
-    padding: 0;
     cursor: pointer;
     touch-action: manipulation;
   }
@@ -281,15 +267,6 @@
   input:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
-  }
-
-  h2,
-  p {
-    margin: 0;
-  }
-
-  [hidden] {
-    display: none !important;
   }
 
   /* Scanning a QR code (src/sync/sync-scan.tsx): on a phone the camera shows behind the page, so while it's open

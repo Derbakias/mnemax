@@ -45,6 +45,8 @@ const styles = {
     'text-center text-warning',
     '[&_.icon]:inline-block [&_.icon]:h-[calc(1cap+2px)] [&_.icon]:w-[calc((1cap+2px)*480/448)]',
     '[&_.icon]:align-[-0.5px]',
+    // The star's drawing sits in the line like a letter, not as a block (Tailwind's reset makes drawings blocks).
+    '[&_svg]:inline [&_svg]:align-baseline',
     'not-supports-[height:1cap]:[&_.icon]:h-[calc(0.7em+2px)]',
     'not-supports-[height:1cap]:[&_.icon]:w-[calc((0.7em+2px)*480/448)]',
   ],
