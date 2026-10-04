@@ -8,8 +8,10 @@ import { STREAM_IDS } from '@/game/types';
 import { cn } from '@/lib/cn';
 
 const styles = {
-  // Scrolls sideways on narrow screens, with no scrollbar showing.
-  scroll: 'overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+  // Scrolls sideways on narrow screens, with no scrollbar showing. Relative, so the screen-reader-only text in
+  // the cells (.visually-hidden) is placed and clipped in here: placed against the whole screen, an opened
+  // round's in the history list stretched the page past the list's bottom.
+  scroll: 'relative overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
   // Fills the width; the column widths below are minimums (narrow screens scroll sideways). The code font, as
   // t-code gives it.
   table: ['w-full border-separate border-spacing-0 text-center whitespace-nowrap', 'font-mono text-[12px] font-medium'],
