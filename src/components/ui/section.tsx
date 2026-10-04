@@ -16,9 +16,9 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    // `section` is still styled in index.css: the Play screen's sections share that rule, and the Play and Stats
-    // screens' CSS points at the name.
-    <section className="section">
+    // Across the whole width of the page. The Stats screen sets a smaller gap on its sections
+    // (src/components/ui/content.styles.ts).
+    <section className="flex flex-col gap-2.5 self-stretch">
       {/* The title with its ⓘ note, and an optional action on the right. When they don't all fit (a long title
           with a chart's crosshair switch and Reset zoom), the action moves under them, starting at the left
           (space-between puts a line's only item at the start), rather than the title or the buttons breaking.

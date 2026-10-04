@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 
+import { contentStyles } from '@/components/ui/content.styles';
 import { Icon } from '@/components/ui/icon';
 import { HudDropdown } from '@/components/ui/hud-dropdown';
 import { DailyTargetChip, hudStyles, SpeedChip } from '@/play/hud-chips';
@@ -51,6 +52,9 @@ const styles = {
     'hover:shadow-[0_14px_28px_-10px_var(--color-accent)]',
     'hover:active:shadow-[0_14px_28px_-10px_var(--color-accent)]',
   ],
+  // The last round and this session: laid out like a Section (src/components/ui/section.tsx), across the whole
+  // width, with 8px more room above.
+  section: 'mt-2 flex flex-col gap-2.5 self-stretch',
 };
 
 /**
@@ -84,7 +88,7 @@ export function StartScreen({
   const showLatest = phase === 'finished' && sessionRounds.length > 0;
 
   return (
-    <div className="content play">
+    <div className={cn(contentStyles.base, contentStyles.play)}>
       <div className={cn(styles.stage)}>
         <div className={cn(hudStyles.row)}>
           <DailyTargetChip loaded={loaded} todayMs={todayMs} />
@@ -162,7 +166,7 @@ export function StartScreen({
       </div>
 
       {showLatest && (
-        <section className="section">
+        <section className={cn(styles.section)}>
           <h2 className="t-heading">{playCopy.results.lastRound}</h2>
           <RoundSummaryCard result={sessionRounds[0]} />
           <RoundDetailTable result={sessionRounds[0]} />
@@ -170,7 +174,7 @@ export function StartScreen({
       )}
 
       {sessionRounds.length > 0 && (
-        <section className="section">
+        <section className={cn(styles.section)}>
           <h2 className="t-heading">{playCopy.results.thisSession}</h2>
           <RoundHistoryList
             rounds={showLatest ? sessionRounds.slice(1) : sessionRounds}

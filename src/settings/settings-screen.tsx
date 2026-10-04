@@ -5,6 +5,7 @@ import { LayoutPreview } from '@/settings/layout-preview';
 import { MatchSlider } from '@/settings/sliders';
 import { styles } from '@/settings/settings-screen.styles';
 import { outlineButton, switchStyles } from '@/components/ui/controls.styles';
+import { contentStyles } from '@/components/ui/content.styles';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { Stepper } from '@/components/ui/stepper';
@@ -103,7 +104,7 @@ export function SettingsScreen({ active }: { active: boolean }) {
   };
 
   return (
-    <div className="content settings">
+    <div className={cn(contentStyles.base, contentStyles.settings)}>
       <Section title={settingsCopy.streams.title} info={settingsCopy.streams.info}>
         {STREAM_IDS.map((stream) => (
           <label key={stream} className="row-between cursor-pointer">

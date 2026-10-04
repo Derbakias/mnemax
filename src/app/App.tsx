@@ -9,6 +9,7 @@ import { SettingsScreen } from '@/settings/settings-screen';
 import { StatsScreen } from '@/stats/stats-screen';
 import { useSettingsStore } from '@/stores/settings';
 import { useSyncStore } from '@/stores/sync';
+import { cn } from '@/lib/cn';
 import { preloadSpeech } from '@/lib/speech';
 
 type Tab = 'play' | 'stats' | 'settings';
@@ -20,6 +21,49 @@ const TABS: { id: Tab; icon: IconName }[] = [
 ];
 
 type SplashState = 'showing' | 'fading' | 'gone';
+
+const styles = {
+  // The whole app: the screen with the tab bar under it, clear of the phone's status bar at the top.
+  app: 'relative flex h-full flex-col pt-(--safe-top)',
+  screen: [
+    // relative: anything placed inside a screen stays inside it. Without it, the screen-reader-only text
+    // (.visually-hidden) was placed against the whole app, and stretched the page past the tab bar.
+    'relative min-h-0 flex-1 overflow-y-auto',
+    // Nothing (e.g. an open dropdown) ever scrolls a screen sideways.
+    'overflow-x-hidden',
+    // Lets what's inside size itself to the visible screen (cqh), e.g. the Play stage on phones.
+    '@container-size',
+    // It scrolls, but shows no scrollbar.
+    '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+  ],
+  // A faint blue glow from the top left and orange from the bottom right (Play and Stats), so the screen isn't
+  // flat white or black; faint enough that the grid's colours still stand out.
+  wash: [
+    'bg-background',
+    'bg-[image:radial-gradient(120%_55%_at_0%_0%,var(--color-wash-blue),transparent_70%),radial-gradient(110%_50%_at_100%_100%,var(--color-wash-orange),transparent_70%)]',
+  ],
+  tabBar: [
+    'flex shrink-0 border-t border-background-selected bg-background pb-(--safe-bottom)',
+    // The tabs sit in the pages' column (640px less its 16px sides, see src/components/ui/content.styles.ts),
+    // not spread across a wide window; the border still runs the full width.
+    'px-[max(0px,calc((100%_-_608px)_/_2))]',
+    // A paused round (data-overlay): the tab bar comes back over the bottom of the screen, so nothing under it
+    // moves.
+    'data-[overlay=true]:absolute data-[overlay=true]:inset-x-0 data-[overlay=true]:bottom-0',
+    'data-[overlay=true]:z-20 data-[overlay=true]:shadow-[0_-8px_24px_rgba(0,0,0,0.12)]',
+  ],
+  // A tab: its icon over its name, grey, or blue for the tab showing (data-on).
+  tab: [
+    'flex h-(--tab-bar-height) flex-1 flex-col items-center justify-center gap-0.5',
+    'text-[11px] font-medium text-text-secondary data-[on=true]:text-accent',
+  ],
+  // The startup screen: a big loader over the whole app, fading out once it's ready (data-fading), and letting
+  // presses through to the app while it does.
+  splash: [
+    'fixed inset-0 z-100 flex flex-col items-center justify-center gap-5 bg-background',
+    '[transition:opacity_0.25s_ease-out] data-[fading=true]:pointer-events-none data-[fading=true]:opacity-0',
+  ],
+};
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('play');
@@ -77,29 +121,31 @@ export default function App() {
     // like the Play button or the Play tab, would catch the answer keys, so arrow keys moved focus and
     // showed a focus ring instead of answering. Only buttons: sliders and inputs still need the press.
     <div
-      className="app"
+      className={cn(styles.app)}
       onMouseDown={(e) => {
         if ((e.target as HTMLElement).closest('button')) {
           e.preventDefault();
         }
       }}
     >
-      <main className="screen play-screen" hidden={tab !== 'play'}>
+      <main className={cn(styles.screen, styles.wash)} hidden={tab !== 'play'}>
         {/* Keyboard shortcuts stay off under the startup screen, so Space can't start a round behind it. */}
         <PlayScreen active={tab === 'play' && splash === 'gone'} onReady={onPlayReady} onStageChange={setPlayStage} />
       </main>
-      <main className="screen stats-screen" hidden={tab !== 'stats'}>
+      <main className={cn(styles.screen, styles.wash)} hidden={tab !== 'stats'}>
         <StatsScreen onReady={onStatsReady} />
       </main>
-      <main className="screen" hidden={tab !== 'settings'}>
+      <main className={cn(styles.screen)} hidden={tab !== 'settings'}>
         <SettingsScreen active={tab === 'settings'} />
       </main>
-      <nav className={tabBarOverlay ? 'tab-bar overlay' : 'tab-bar'} hidden={tabBarHidden}>
+      {/* data-tab-bar: the HUD's dropdowns find the tab bar by it, to stop above it. */}
+      <nav className={cn(styles.tabBar)} data-tab-bar data-overlay={tabBarOverlay} hidden={tabBarHidden}>
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
-            className={tab === t.id ? 'tab on' : 'tab'}
+            className={cn(styles.tab)}
+            data-on={tab === t.id}
             aria-current={tab === t.id ? 'page' : undefined}
             onClick={() => setTab(t.id)}
           >
@@ -109,9 +155,9 @@ export default function App() {
         ))}
       </nav>
       {splash !== 'gone' && (
-        <div className={splash === 'fading' ? 'splash fading' : 'splash'}>
+        <div className={cn(styles.splash)} data-fading={splash === 'fading'}>
           <GridLoader label="Loading" size="large" />
-          <span className="splash-title">{appCopy.splashTitle}</span>
+          <span className="text-[20px] font-semibold tracking-[0.02em] text-text-secondary">{appCopy.splashTitle}</span>
         </div>
       )}
     </div>

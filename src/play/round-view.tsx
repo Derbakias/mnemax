@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 
+import { contentStyles } from '@/components/ui/content.styles';
 import { Icon } from '@/components/ui/icon';
 import { Chip, DailyTargetChip, hudStyles, SpeedBolts } from '@/play/hud-chips';
 import { ResponseButtons } from '@/play/response-buttons/buttons';
@@ -93,7 +94,7 @@ export function RoundView({
   const historyHighlight = STREAM_IDS.some((s) => state.match[s]) ? state.trialIndex - n : undefined;
   const trial = Math.max(0, state.trialIndex) + 1;
   return (
-    <div className="content play in-round">
+    <div className={cn(contentStyles.base, contentStyles.play, contentStyles.inRound)}>
       {/* The round fills the screen: the HUD and round progress at the top, the grid, and the answer
           buttons sharing whatever height is left, in thumb reach. */}
       <div className={cn(styles.stage)} data-layout={prefs.buttonLayout} data-history={showHistory}>
