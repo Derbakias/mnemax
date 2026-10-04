@@ -15,8 +15,14 @@ import { rangeStart, useToday } from '@/stats/use-today';
 import { DATE_LOCALE } from '@/config/stats';
 import { formatDuration } from '@/lib/format';
 import { useTheme } from '@/lib/theme';
+import { cn } from '@/lib/cn';
 
 const DAY_MS = 86400000;
+
+const styles = {
+  stats:
+    't-small secondary flex flex-wrap justify-center gap-x-5 gap-y-1 [&_strong]:font-semibold [&_strong]:text-text',
+};
 
 function minutesCeiling(maxMinutes: number): number {
   const target = maxMinutes * 1.15;
@@ -197,7 +203,10 @@ export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: 
       <RangeChips days={rangeDays} zoom={zoom} onPick={setRangeDays} />
 
       {played.length === 0 ? (
-        <div className="chart-box" style={{ height: DAILY_TIME_CHART_HEIGHT }}>
+        <div
+          className="flex items-center justify-center self-stretch text-center"
+          style={{ height: DAILY_TIME_CHART_HEIGHT }}
+        >
           <span className="t-small secondary">{statsCopy.timePlayed.noPlayTime}</span>
         </div>
       ) : (
@@ -211,7 +220,7 @@ export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: 
           { label: 'Avg level', color: theme.accent, mark: 'line' },
         ]}
       />
-      <div className="chart-stats t-small secondary">
+      <div className={cn(styles.stats)}>
         <span>
           <strong>{played.length}</strong> {played.length === 1 ? 'day' : 'days'} played
         </span>

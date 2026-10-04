@@ -33,8 +33,8 @@ export const PAN_Y_THRESHOLD = 8;
 export const Y_MIN_SHARE = 1 / 20;
 export const Y_MAX_SHARE = 4;
 
-/** TODO:  Y_HANDLE_WIDTH only controls where the left-axis handle is placed; the `.axis-handle.y` rule in src/styles/index.css still fixes the handle itself at 44px. Changing this config creates either a gap or overlap between the axis and its interactive strip. Apply the configured width to the handle (inline or via a CSS custom property) as well as its placement. */
-/** Width of the strip over a y axis that stretches it (matches `.axis-handle.y` in CSS). */
+/** TODO:  Y_HANDLE_WIDTH only controls where the left-axis handle is placed; the `w-11` in Y_HANDLE (src/components/charts/axis-handles.ts) still fixes the handle itself at 44px. Changing this config creates either a gap or overlap between the axis and its interactive strip. Apply the configured width to the handle (inline or via a CSS custom property) as well as its placement. */
+/** Width of the strip over a y axis that stretches it (matches Y_HANDLE in src/components/charts/axis-handles.ts). */
 export const Y_HANDLE_WIDTH = 44;
 /** A chart ignores the wheel this long after the page scrolled, so scrolling past it doesn't zoom it. */
 export const PAGE_SCROLL_GRACE_MS = 500;

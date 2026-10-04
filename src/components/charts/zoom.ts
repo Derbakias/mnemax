@@ -13,6 +13,19 @@ import { addAxisHandles, onDrag } from './axis-handles';
 import { snapToNearestPoint } from './tooltip';
 import { addTouchControls } from './touch';
 
+// The plot area of a chart controlled like a map: it pans with click-and-hold (an open hand, closed while
+// held) and stretches an axis when dragged along it. Pinches and sideways drags go to the chart (crosshair,
+// zoom; see addTouchControls); vertical swipes still scroll. Zoomed in, a finger moves the chart up and down
+// as well, so vertical swipes on it no longer scroll the page (swiping beside it still does, and a double tap
+// resets it). Touch screens show no hand.
+const PANNABLE = [
+  'cursor-grab',
+  'data-dragging:cursor-grabbing',
+  '[@media(hover:none)]:cursor-default',
+  'touch-pan-y',
+  'data-zoomed:touch-none',
+];
+
 let lastPageScroll = 0;
 if (typeof document !== 'undefined') {
   // Scroll events don't bubble, but a capturing listener on the document sees every scrolling element.
@@ -167,10 +180,10 @@ export function chartInteraction({
   const notify = () => {
     const zoomed = state.xWindow != null || state.manualY;
     onZoomed(zoomed);
-    // A zoomed-in chart takes vertical touch drags too (`.zoomed` in CSS), so a finger can move it up and
-    // down; until then they scroll the page. Only where panning moves the y axes.
+    // A zoomed-in chart takes vertical touch drags too (data-zoomed, see PANNABLE), so a finger can move it
+    // up and down; until then they scroll the page. Only where panning moves the y axes.
     if (panZoomY) {
-      overEl?.classList.toggle('zoomed', zoomed);
+      overEl?.toggleAttribute('data-zoomed', zoomed);
     }
   };
   const range = (u: uPlot, key: string) => [u.scales[key].min ?? 0, u.scales[key].max ?? 1] as const;
@@ -184,7 +197,7 @@ export function chartInteraction({
       ready: (u) => {
         const over = u.over;
         overEl = over;
-        over.classList.add('pannable');
+        over.classList.add(...PANNABLE);
 
         // Scroll: zoom all axes around the pointer. Zooming all the way out restores the fitted y axes.
         over.addEventListener(

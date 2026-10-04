@@ -5,7 +5,35 @@ import 'uplot/dist/uPlot.min.css';
 import { Icon } from '../ui/icon';
 import { CHART_RANGES } from '@/config/charts';
 import { useElementWidth } from '@/hooks/use-element-width';
+import { cn } from '@/lib/cn';
 import type { ChartZoom } from './zoom';
+
+/**
+ * The chips over every chart (time ranges, the By mode metric) and Reset zoom: put `row` on the row and `chip`
+ * on each chip, with data-on on the picked one.
+ */
+export const chipStyles = {
+  row: 'flex flex-wrap items-center gap-1.5',
+  chip: [
+    // The code font, as t-code gives it, a size down.
+    'font-mono text-[11px] font-medium',
+    'rounded-lg border border-transparent px-2.5 py-[5px]',
+    'bg-background-element text-text-secondary [transition:background-color_0.15s,color_0.15s]',
+    'data-[on=true]:border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)]',
+    'data-[on=true]:bg-accent-soft data-[on=true]:text-accent-ink hover:not-data-[on=true]:text-text',
+  ],
+};
+
+const styles = {
+  // The crosshair switch in a chart's header (see CrosshairToggle): touch screens only. Just the icon, with
+  // its ring filled (grey off, accent on); the button around it is a bit bigger than the icon, for the finger.
+  crosshair: [
+    'hidden size-7 items-center justify-center [@media(hover:none)]:inline-flex',
+    'text-text-secondary aria-pressed:text-accent',
+    '[&_.icon_.ionicon-stroke-width]:fill-background-selected',
+    'aria-pressed:[&_.icon_.ionicon-stroke-width]:fill-accent',
+  ],
+};
 
 interface UPlotChartProps {
   /** Memoize these: a new object rebuilds the chart. */
@@ -67,14 +95,14 @@ export function UPlotChart({ options, data, height, seriesShown, zoom }: UPlotCh
 
   // The box holds the chart's height before uPlot has drawn into it (a new chart waits a render for its
   // width), so rebuilding one, like picking another mode, doesn't move the page under it.
-  const box = <div ref={boxRef} className="uplot-box" style={{ minHeight: height }} />;
+  const box = <div ref={boxRef} className="min-w-0 self-stretch" style={{ minHeight: height }} />;
   if (!zoom) {
     return box;
   }
   // The touch gestures read the switch from `data-crosshair` (see addTouchControls), so flipping it
   // doesn't rebuild the chart.
   return (
-    <div className="uplot-frame" data-crosshair={crosshair ? 'on' : 'off'}>
+    <div className="min-w-0 self-stretch" data-crosshair={crosshair ? 'on' : 'off'}>
       {box}
     </div>
   );
@@ -94,12 +122,13 @@ export function RangeChips({
   onPick: (days: number | null) => void;
 }) {
   return (
-    <div className="chip-row">
+    <div className={cn(chipStyles.row)}>
       {CHART_RANGES.map((range) => (
         <button
           key={range.label}
           type="button"
-          className={days === range.days && !zoom.zoomed ? 'filter-chip t-code on' : 'filter-chip t-code'}
+          className={cn(chipStyles.chip)}
+          data-on={days === range.days && !zoom.zoomed}
           onClick={() => {
             onPick(range.days);
             zoom.reset();
@@ -121,7 +150,7 @@ export function ChartZoomActions({ zoom }: { zoom: ChartZoom }) {
     <>
       <CrosshairToggle zoom={zoom} />
       {zoom.zoomed && (
-        <button type="button" className="filter-chip t-code" onClick={zoom.reset}>
+        <button type="button" className={cn(chipStyles.chip)} onClick={zoom.reset}>
           Reset zoom
         </button>
       )}
@@ -137,7 +166,7 @@ function CrosshairToggle({ zoom }: { zoom: ChartZoom }) {
   return (
     <button
       type="button"
-      className={zoom.crosshair ? 'crosshair-toggle on' : 'crosshair-toggle'}
+      className={cn(styles.crosshair)}
       aria-label="Crosshair"
       aria-pressed={zoom.crosshair}
       title={zoom.crosshair ? 'Crosshair on: one finger reads values' : 'Crosshair off: one finger moves the chart'}

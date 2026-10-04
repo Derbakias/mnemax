@@ -3,6 +3,12 @@ import uPlot from 'uplot';
 import { AXIS_DRAG_SCALE, Y_HANDLE_WIDTH } from '@/config/charts';
 import type { InteractiveYScale } from './zoom';
 
+// Invisible strips over the axes, above the plot area. A finger drags them too. Along the x axis, sideways
+// drags stretch it and vertical swipes still scroll the page; a y axis takes every drag that starts on it, as
+// it's stretched up and down, the way the page scrolls. The y strip is Y_HANDLE_WIDTH wide.
+const X_HANDLE = 'absolute z-2 h-7 cursor-ew-resize touch-pan-y';
+const Y_HANDLE = 'absolute z-2 w-11 cursor-ns-resize touch-none';
+
 /**
  * Drags an element with the primary button (mouse or pen), calling `move` with the offset so far. With
  * `touch`, a finger drags it too: the axis handles, where the element's `touch-action` leaves the drag's
@@ -22,9 +28,10 @@ export const onDrag = (el: HTMLElement, move: (dx: number, dy: number) => void, 
       el.removeEventListener('pointermove', onMove);
       el.removeEventListener('pointerup', onUp);
       el.removeEventListener('pointercancel', onUp);
-      el.classList.remove('dragging');
+      el.toggleAttribute('data-dragging', false);
     };
-    el.classList.add('dragging');
+    // While held (the chart's plot area shows a closed hand; see chartInteraction).
+    el.toggleAttribute('data-dragging', true);
     el.addEventListener('pointermove', onMove);
     el.addEventListener('pointerup', onUp);
     el.addEventListener('pointercancel', onUp);
@@ -50,7 +57,7 @@ export function addAxisHandles(u: uPlot, over: HTMLElement, ctx: AxisHandlesCont
 
   // Invisible strips over the axes (uPlot draws axes on the canvas, so they have no elements).
   const xHandle = document.createElement('div');
-  xHandle.className = 'axis-handle x';
+  xHandle.className = X_HANDLE;
   xHandle.title = 'Drag left or right to stretch the time axis';
   over.parentElement?.append(xHandle);
   let xStart: readonly [number, number] = [0, 0];
@@ -71,7 +78,7 @@ export function addAxisHandles(u: uPlot, over: HTMLElement, ctx: AxisHandlesCont
   // One handle per y axis; stretching one moves only that axis.
   const yHandles = yScales.map((y) => {
     const handle = document.createElement('div');
-    handle.className = 'axis-handle y';
+    handle.className = Y_HANDLE;
     handle.title = 'Drag up or down to stretch the value axis';
     over.parentElement?.append(handle);
     let yStart: readonly [number, number] = [0, 0];
