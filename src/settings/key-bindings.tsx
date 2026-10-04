@@ -5,7 +5,21 @@ import { settingsCopy } from '@/copy/settings';
 import { STREAM_ICONS } from '@/config/ui';
 import type { StreamId } from '@/game/types';
 import { STREAM_IDS, STREAM_LABELS } from '@/game/types';
+import { cn } from '@/lib/cn';
 import { isBindableKey, keyLabel } from '@/lib/prefs';
+
+const styles = {
+  // A key cap: a thick bottom edge, the key's name in the code font. A fixed height, so switching to
+  // "Press a key…" (another font, with a taller line) doesn't move the rows below.
+  key: [
+    'inline-flex h-8.5 min-w-11 items-center justify-center px-3 text-center',
+    'rounded-lg border border-b-3 border-background-selected bg-background-element',
+    'font-mono text-[14px] leading-none font-semibold',
+    // Waiting for a key press: blue, in the app's own font.
+    'data-[listening=true]:border-accent data-[listening=true]:text-accent',
+    'data-[listening=true]:font-display data-[listening=true]:font-medium',
+  ],
+};
 
 /**
  * One row per stream with its answer key. Tapping a key waits for the next key press and assigns it
@@ -55,13 +69,14 @@ export function KeyBindings({
     <div className="stack-8">
       {STREAM_IDS.map((stream) => (
         <div key={stream} className="row-between">
-          <span className="key-binding-label t-default">
+          <span className="t-default inline-flex items-center gap-2.5">
             <Icon name={STREAM_ICONS[stream]} size={20} />
             {STREAM_LABELS[stream]}
           </span>
           <button
             type="button"
-            className={listening === stream ? 'key-binding listening' : 'key-binding'}
+            className={cn(styles.key)}
+            data-listening={listening === stream}
             aria-label={`${STREAM_LABELS[stream]} key: ${keyLabel(keys[stream])}. Tap to change.`}
             onClick={() => {
               setListening(listening === stream ? null : stream);

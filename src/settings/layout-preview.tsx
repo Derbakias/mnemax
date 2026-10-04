@@ -31,7 +31,7 @@ export function LayoutPreview({ layout }: { layout: ButtonLayout }) {
       : [0, 1].map((i) => <rect key={i} x={8} y={28 + i * 9} width={44} height={7} rx={2} />);
 
   return (
-    <svg className="layout-preview" viewBox="0 0 60 44" width={60} height={44} aria-hidden fill="currentColor">
+    <svg className="mt-1 mb-1.5 block" viewBox="0 0 60 44" width={60} height={44} aria-hidden fill="currentColor">
       {cells}
       <g fillOpacity={0.55}>{buttons}</g>
     </svg>

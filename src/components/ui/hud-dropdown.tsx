@@ -82,7 +82,7 @@ export function HudDropdown({
       // The tab bar covers the bottom of the window, so the panel has to stop above it (it's hidden during a
       // round).
       const bottomLimit =
-        document.querySelector('.tab-bar:not([hidden])')?.getBoundingClientRect().top ?? window.innerHeight;
+        document.querySelector('[data-tab-bar]:not([hidden])')?.getBoundingClientRect().top ?? window.innerHeight;
       const below = bottomLimit - rowRect.bottom - DROPDOWN_PANEL_GAP - DROPDOWN_EDGE_MARGIN;
       const above = rowRect.top - DROPDOWN_PANEL_GAP - DROPDOWN_EDGE_MARGIN;
       const needed = panel.scrollHeight;

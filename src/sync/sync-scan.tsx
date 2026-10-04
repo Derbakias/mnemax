@@ -1,8 +1,28 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
+import { outlineButton } from '@/components/ui/controls.styles';
 import { syncCopy } from '@/copy/sync';
 import { LOOK_EVERY_MS, LOOK_WIDTH } from '@/config/sync';
+import { cn } from '@/lib/cn';
+
+// White over the camera picture, in light and dark mode alike.
+const styles = {
+  // Over the whole screen, clear of the phone's notch and home bar.
+  overlay: [
+    'fixed inset-0 z-100 flex flex-col items-center justify-center gap-7 text-light',
+    'px-6 pt-[calc(var(--safe-top)+24px)] pb-[calc(var(--safe-bottom)+24px)]',
+  ],
+  hint: 'max-w-[280px] text-center font-semibold [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]',
+  // The square to aim with; everything around it is dimmed.
+  frame: [
+    'aspect-square w-[min(260px,70vw)] rounded-[20px] border-3 border-light',
+    'shadow-[0_0_0_100vmax_rgba(0,0,0,0.45)]',
+  ],
+  cancel: 'flex-none border-light bg-[rgba(0,0,0,0.35)] px-8 py-2.5 text-light',
+  // The camera picture behind it all, mirrored like a mirror: moving the code left moves it left on screen.
+  video: 'absolute inset-0 -z-1 size-full bg-[#000] object-cover transform-[scaleX(-1)]',
+};
 
 /**
  * While the camera looks for the QR code: a frame to aim with and Cancel. On a phone the camera shows behind the
@@ -17,16 +37,17 @@ export function ScanOverlay({
   onCancel: () => void;
   children?: ReactNode;
 }) {
+  // Clears the page's background and hides the app while it's open (see `html.scanning` in index.css).
   useEffect(() => {
     document.documentElement.classList.add('scanning');
     return () => document.documentElement.classList.remove('scanning');
   }, []);
   return createPortal(
-    <div className="scan-overlay">
+    <div className={cn(styles.overlay)}>
       {children}
-      <p className="scan-hint">{hint}</p>
-      <div className="scan-frame" aria-hidden />
-      <button type="button" className="outline-button scan-cancel" onClick={onCancel}>
+      <p className={cn(styles.hint)}>{hint}</p>
+      <div className={cn(styles.frame)} aria-hidden />
+      <button type="button" className={cn(outlineButton.base, styles.cancel)} onClick={onCancel}>
         Cancel
       </button>
     </div>,
@@ -113,7 +134,7 @@ export function CameraScan({
 
   return (
     <ScanOverlay hint={syncCopy.pairing.cameraScanHint} onCancel={onCancel}>
-      <video ref={video} className="scan-video" muted playsInline />
+      <video ref={video} className={cn(styles.video)} muted playsInline />
     </ScanOverlay>
   );
 }

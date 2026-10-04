@@ -3,6 +3,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyBindings } from '@/settings/key-bindings';
 import { LayoutPreview } from '@/settings/layout-preview';
 import { MatchSlider } from '@/settings/sliders';
+import { styles } from '@/settings/settings-screen.styles';
+import { outlineButton, switchStyles } from '@/components/ui/controls.styles';
+import { contentStyles } from '@/components/ui/content.styles';
 import { Icon } from '@/components/ui/icon';
 import { Section } from '@/components/ui/section';
 import { Stepper } from '@/components/ui/stepper';
@@ -15,6 +18,7 @@ import { STREAM_IDS, STREAM_LABELS } from '@/game/types';
 import { MAX_DAILY_TARGET_MINUTES, MIN_DAILY_TARGET_MINUTES, STEP_DAILY_TARGET_MINUTES } from '@/config/stats';
 import type { ButtonLayout } from '@/lib/prefs';
 import { useSettingsStore } from '@/stores/settings';
+import { cn } from '@/lib/cn';
 import { buildStatsJson, exportStats, parseStatsPayload, pickStatsFileText, statsFilename } from '@/lib/stats-io';
 import { loadRounds, mergeRounds } from '@/lib/storage';
 
@@ -100,15 +104,15 @@ export function SettingsScreen({ active }: { active: boolean }) {
   };
 
   return (
-    <div className="content settings">
+    <div className={cn(contentStyles.base, contentStyles.settings)}>
       <Section title={settingsCopy.streams.title} info={settingsCopy.streams.info}>
         {STREAM_IDS.map((stream) => (
-          <label key={stream} className="row-between switch-row">
+          <label key={stream} className="row-between cursor-pointer">
             <span className="t-default">{STREAM_LABELS[stream]}</span>
             <input
               type="checkbox"
               role="switch"
-              className="switch"
+              className={cn(switchStyles)}
               checked={settings.activeStreams[stream]}
               onChange={(e) => toggleStream(stream, e.target.checked)}
             />
@@ -121,26 +125,28 @@ export function SettingsScreen({ active }: { active: boolean }) {
       </Section>
 
       <Section title={settingsCopy.speed.title} info={settingsCopy.speed.info}>
-        <div className="preset-row">
+        <div className="flex flex-wrap gap-2">
           {/* Slowest first, reading left to right towards faster. */}
           {[...SPEED_PRESETS].reverse().map((preset) => (
             <button
               key={preset.id}
               type="button"
-              className={settings.speed === preset.id ? 'preset-chip on' : 'preset-chip'}
+              className={cn(styles.chip)}
+              data-on={settings.speed === preset.id}
               onClick={() => setSpeed(preset.id)}
             >
               <span className="t-small">{preset.label}</span>
-              <span className="t-code preset-sub">{preset.answerMs} ms</span>
+              <span className="t-code opacity-70">{preset.answerMs} ms</span>
             </button>
           ))}
         </div>
-        <label className="switch-row inline">
+        {/* The same room below the speed chips as between them and the heading above. */}
+        <label className={cn(styles.switchInline, 'mt-1.5')}>
           <span className="t-default">{settingsCopy.speed.timerSwitch}</span>
           <input
             type="checkbox"
             role="switch"
-            className="switch"
+            className={cn(switchStyles)}
             checked={prefs.showTrialTimer}
             onChange={(e) => setShowTrialTimer(e.target.checked)}
           />
@@ -160,7 +166,8 @@ export function SettingsScreen({ active }: { active: boolean }) {
       </Section>
 
       <Section title={settingsCopy.dailyTarget.title} info={settingsCopy.dailyTarget.info}>
-        <div className="inline-row">
+        {/* The minutes right beside the number, rather than pushed to the far edge. */}
+        <div className="flex items-center gap-3">
           <Stepper
             value={prefs.dailyTargetMinutes}
             min={MIN_DAILY_TARGET_MINUTES}
@@ -173,22 +180,22 @@ export function SettingsScreen({ active }: { active: boolean }) {
       </Section>
 
       <Section title={settingsCopy.tutorial.title} info={settingsCopy.tutorial.info}>
-        <label className="row-between switch-row">
+        <label className="row-between cursor-pointer">
           <span className="t-default">{settingsCopy.tutorial.historySwitch}</span>
           <input
             type="checkbox"
             role="switch"
-            className="switch"
+            className={cn(switchStyles)}
             checked={prefs.tutorialHistory}
             onChange={(e) => setTutorialAid('tutorialHistory', e.target.checked)}
           />
         </label>
-        <label className="row-between switch-row">
+        <label className="row-between cursor-pointer">
           <span className="t-default">{settingsCopy.tutorial.solutionSwitch}</span>
           <input
             type="checkbox"
             role="switch"
-            className="switch"
+            className={cn(switchStyles)}
             checked={prefs.tutorialSolution}
             onChange={(e) => setTutorialAid('tutorialSolution', e.target.checked)}
           />
@@ -196,12 +203,13 @@ export function SettingsScreen({ active }: { active: boolean }) {
       </Section>
 
       <Section title={settingsCopy.buttonLayout.title} info={settingsCopy.buttonLayout.info}>
-        <div className="layout-options">
+        <div className={cn(styles.layoutOptions)}>
           {BUTTON_LAYOUTS.map((layout) => (
             <button
               key={layout}
               type="button"
-              className={prefs.buttonLayout === layout ? 'preset-chip on' : 'preset-chip'}
+              className={cn(styles.chip, styles.layoutChip)}
+              data-on={prefs.buttonLayout === layout}
               onClick={() => setButtonLayout(layout)}
             >
               <LayoutPreview layout={layout} />
@@ -210,12 +218,12 @@ export function SettingsScreen({ active }: { active: boolean }) {
           ))}
         </div>
         {prefs.buttonLayout === 'grid' && (
-          <label className="switch-row inline">
+          <label className={cn(styles.switchInline)}>
             <span className="t-default">{settingsCopy.buttonLayout.swipeSwitch}</span>
             <input
               type="checkbox"
               role="switch"
-              className="switch"
+              className={cn(switchStyles)}
               checked={prefs.swipeAnswers}
               onChange={(e) => setSwipeAnswers(e.target.checked)}
             />
@@ -230,11 +238,21 @@ export function SettingsScreen({ active }: { active: boolean }) {
       )}
 
       <Section title={settingsCopy.data.title} info={settingsCopy.data.info}>
-        <div className="data-row">
-          <button type="button" className="outline-button accent" disabled={dataBusy} onClick={onExportStats}>
+        <div className="flex gap-2.5">
+          <button
+            type="button"
+            className={cn(outlineButton.base, outlineButton.accent)}
+            disabled={dataBusy}
+            onClick={onExportStats}
+          >
             Export JSON
           </button>
-          <button type="button" className="outline-button accent" disabled={dataBusy} onClick={onImportStats}>
+          <button
+            type="button"
+            className={cn(outlineButton.base, outlineButton.accent)}
+            disabled={dataBusy}
+            onClick={onImportStats}
+          >
             Import JSON
           </button>
         </div>
@@ -243,9 +261,13 @@ export function SettingsScreen({ active }: { active: boolean }) {
 
       <SyncSection active={active} />
 
-      <button type="button" className="outline-button danger reset-button" onClick={onResetDefaults}>
+      <button
+        type="button"
+        className={cn(outlineButton.base, outlineButton.danger, 'relative')}
+        onClick={onResetDefaults}
+      >
         Reset to defaults
-        <span className={resetDone ? 'reset-done on' : 'reset-done'}>
+        <span className={cn(styles.resetTick)} data-on={resetDone}>
           <Icon name="checkmark-circle" size={22} />
         </span>
       </button>
@@ -253,7 +275,7 @@ export function SettingsScreen({ active }: { active: boolean }) {
         {resetDone ? settingsCopy.reset.done : ''}
       </span>
 
-      <p className="app-version t-small secondary">Mnemax v{__APP_VERSION__}</p>
+      <p className="t-small secondary text-center">Mnemax v{__APP_VERSION__}</p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, type SubmitEvent } from 'react';
 
 import { Section } from '../components/ui/section';
+import { outlineButton, switchStyles, textField } from '@/components/ui/controls.styles';
 import { syncCopy } from '@/copy/sync';
 import { SyncLog } from './sync-log';
 import { Pairing } from './sync-pairing';
@@ -8,6 +9,7 @@ import { PeerRow } from './sync-peer';
 import { useSettingsStore } from '@/stores/settings';
 import { isUsable, useSyncStore } from '@/stores/sync';
 import { cancelPairing, renameDevice } from '@/sync/sync';
+import { cn } from '@/lib/cn';
 
 /**
  * Sync with your other devices on the same Wi-Fi: the paired devices, pairing a new one, and the switch for
@@ -80,20 +82,20 @@ function SyncPanel({ active }: { active: boolean }) {
               </button>
             </div>
           ) : (
-            <form className="sync-form" onSubmit={onRename}>
+            <form className="flex flex-col gap-1.5" onSubmit={onRename}>
               <label className="t-small secondary" htmlFor="sync-name">
                 {syncCopy.section.renameLabel}
               </label>
-              <div className="sync-form-row">
+              <div className="flex gap-2.5">
                 <input
                   id="sync-name"
-                  className="text-field"
+                  className={cn(textField)}
                   value={nameDraft}
                   maxLength={40}
                   autoFocus
                   onChange={(e) => setNameDraft(e.target.value)}
                 />
-                <button type="submit" className="outline-button accent sync-small-button">
+                <button type="submit" className={cn(outlineButton.base, outlineButton.accent, outlineButton.small)}>
                   Save
                 </button>
               </div>
@@ -123,10 +125,10 @@ function SyncPanel({ active }: { active: boolean }) {
           </div>
 
           {pairing == null ? (
-            <div className="data-row">
+            <div className="flex gap-2.5">
               <button
                 type="button"
-                className="outline-button accent"
+                className={cn(outlineButton.base, outlineButton.accent)}
                 disabled={busy}
                 onClick={() => startPairing('show')}
               >
@@ -134,7 +136,7 @@ function SyncPanel({ active }: { active: boolean }) {
               </button>
               <button
                 type="button"
-                className="outline-button accent"
+                className={cn(outlineButton.base, outlineButton.accent)}
                 disabled={busy}
                 onClick={() => startPairing('enter')}
               >
@@ -145,12 +147,12 @@ function SyncPanel({ active }: { active: boolean }) {
             <Pairing how={pairing.how} hint={pairing.hint} active={active} onEnd={() => setPairing(null)} />
           )}
 
-          <label className="row-between switch-row">
+          <label className="row-between cursor-pointer">
             <span className="t-default">{syncCopy.section.autoSwitch}</span>
             <input
               type="checkbox"
               role="switch"
-              className="switch"
+              className={cn(switchStyles)}
               checked={autoSync}
               onChange={(e) => setAutoSync(e.target.checked)}
             />
@@ -161,7 +163,7 @@ function SyncPanel({ active }: { active: boolean }) {
       {!usable && status == null && notice?.kind === 'error' && (
         <button
           type="button"
-          className="outline-button accent"
+          className={cn(outlineButton.base, outlineButton.accent)}
           onClick={() => {
             dismiss();
             refresh();
@@ -171,9 +173,11 @@ function SyncPanel({ active }: { active: boolean }) {
         </button>
       )}
       {notice && (
-        <div className="sync-notice">
+        // A message under the section, with a small Dismiss at its bottom right.
+        <div className="flex flex-col gap-1">
           {notice.kind === 'error' ? (
-            <p className="t-small sync-error" role="alert">
+            // An error is labelled, not only red.
+            <p className="t-small text-danger" role="alert">
               <strong>{syncCopy.section.errorLead}</strong> {notice.text}
             </p>
           ) : (
@@ -183,7 +187,7 @@ function SyncPanel({ active }: { active: boolean }) {
           )}
           <button
             type="button"
-            className="text-button secondary sync-dismiss"
+            className="text-button secondary self-end text-[12px]/4"
             aria-label={notice.kind === 'error' ? 'Dismiss error' : 'Dismiss message'}
             onClick={dismiss}
           >

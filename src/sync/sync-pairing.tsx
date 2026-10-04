@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type SubmitEvent } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
+import { outlineButton } from '@/components/ui/controls.styles';
 import { syncCopy } from '@/copy/sync';
+import { cn } from '@/lib/cn';
 import { EnterCode } from './sync-enter-code';
 import { ShowCode } from './sync-show-code';
 import { useSyncStore } from '@/stores/sync';
@@ -229,7 +231,8 @@ export function Pairing({
   const cancel = (
     <button
       type="button"
-      className="outline-button secondary"
+      // A grey outline, with the secondary class's grey text.
+      className={cn(outlineButton.base, outlineButton.secondary, 'secondary')}
       onClick={() => {
         note('Cancelled on this device.');
         end();

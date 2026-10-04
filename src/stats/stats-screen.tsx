@@ -26,6 +26,7 @@ import { useSyncStore } from '@/stores/sync';
 import { accuracyColor, useTheme } from '@/lib/theme';
 import { cn } from '@/lib/cn';
 import { styles } from '@/stats/stats-screen.styles';
+import { contentStyles } from '@/components/ui/content.styles';
 
 /** `onReady` fires once the saved rounds have loaded and the stats have been drawn with them. */
 export function StatsScreen({ onReady }: { onReady?: () => void }) {
@@ -101,7 +102,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
 
   if (!loaded) {
     return (
-      <div className="content stats">
+      <div className={cn(contentStyles.base, contentStyles.stats)}>
         <GridLoader label="Loading stats" />
       </div>
     );
@@ -109,14 +110,14 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
 
   if (rounds.length === 0 || !level || !selected) {
     return (
-      <div className="content stats">
+      <div className={cn(contentStyles.base, contentStyles.stats)}>
         <p className="t-default secondary mt-10 text-center">{statsCopy.empty}</p>
       </div>
     );
   }
 
   return (
-    <div className="content stats">
+    <div className={cn(contentStyles.base, contentStyles.stats)}>
       <div className={cn(styles.summary)}>
         <StatTile
           icon="trending-up-outline"

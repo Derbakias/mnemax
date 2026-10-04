@@ -17,7 +17,7 @@ function Slider({
   return (
     <input
       type="range"
-      className="slider"
+      className="mx-0 my-2 w-full cursor-pointer accent-accent"
       value={value}
       min={min}
       max={max}
@@ -39,7 +39,7 @@ export function MatchSlider({
   onChange: (v: number) => void;
 }) {
   return (
-    <div className="match-block">
+    <div className="mb-1 flex flex-col gap-0.5">
       <div className="row-between">
         <span className="t-default">{STREAM_LABELS[stream]}</span>
         <span className="t-code">{value}</span>
