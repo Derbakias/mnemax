@@ -1,14 +1,18 @@
 import type uPlot from 'uplot';
 
 // The tooltip's look. It sits over the chart in the text colour, see-through, so the points under it stay
-// visible. In the app's font: uPlot gives its chart a font of its own.
+// visible. In the app's font: uPlot gives its chart a font of its own. No wider than the chart: a long
+// value (a mode with many stimuli) wraps instead of running off the side.
 const TOOLTIP = [
-  'pointer-events-none absolute top-0 left-0 z-5 min-w-[170px] rounded-[10px] px-2.5 py-2',
+  'pointer-events-none absolute top-0 left-0 z-5 max-w-full min-w-[170px] rounded-[10px] px-2.5 py-2',
   'bg-[color-mix(in_srgb,var(--color-text)_72%,transparent)] text-background',
-  'font-display text-[12px]/[17px] whitespace-nowrap',
+  'font-display text-[12px]/[17px]',
 ].join(' ');
 const TOOLTIP_TITLE = 'mb-1 font-bold';
-const TOOLTIP_ROW = 'flex justify-between gap-4 [&>:first-child]:opacity-70';
+const TOOLTIP_ROW = [
+  'flex justify-between gap-4',
+  '[&>:first-child]:whitespace-nowrap [&>:first-child]:opacity-70 [&>:last-child]:text-right',
+].join(' ');
 
 /**
  * A magnetic crosshair (`cursor.move`): the vertical line jumps to the nearest data point on x, and the
