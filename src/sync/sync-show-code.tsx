@@ -1,7 +1,19 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
+import { outlineButton } from '@/components/ui/controls.styles';
 import { syncCopy } from '@/copy/sync';
+import { cn } from '@/lib/cn';
+import { pairingStyles } from '@/sync/pairing.styles';
 import { groupCode, type Qr, type ShownCode } from '@/sync/sync';
+
+const styles = {
+  // White behind the QR code in dark mode too (see QrCode): scanners look for dark squares on a light ground.
+  qr: 'h-auto w-[min(220px,70vw)] self-center rounded-lg',
+  // Holds the QR code's place until it's ready.
+  qrWaiting: 'aspect-square bg-background-selected',
+  // The address and the code, in the code font. They can be selected, to copy them.
+  value: 'font-mono text-[16px]/6 font-semibold select-text',
+};
 
 /**
  * The address, code and QR code, with the seconds left. Once the code can't be used any more (it ran out, or
@@ -28,14 +40,14 @@ export function ShowCode({
   const ended = showing.ended ?? (shown != null && left === 0 ? syncCopy.showCode.ranOut : null);
   if (ended) {
     return (
-      <div className="card sync-pairing">
+      <div className={cn('card', pairingStyles.card)}>
         <p className="t-default" role="alert">
           {ended}
         </p>
         <p className="t-small secondary">{syncCopy.showCode.whyShort}</p>
-        <div className="data-row">
+        <div className="flex gap-2.5">
           {cancel}
-          <button type="button" className="outline-button sync-primary" onClick={onNewCode}>
+          <button type="button" className={cn(outlineButton.base, outlineButton.primary)} onClick={onNewCode}>
             New code
           </button>
         </div>
@@ -54,8 +66,8 @@ export function ShowCode({
     }
   };
   return (
-    <div className="card sync-pairing">
-      <ol className="t-small secondary sync-steps">
+    <div className={cn('card', pairingStyles.card)}>
+      <ol className={cn('t-small secondary', pairingStyles.steps)}>
         <li>{syncCopy.showCode.stepEnterCode}</li>
         <li>{syncCopy.showCode.stepScan}</li>
       </ol>
@@ -63,22 +75,22 @@ export function ShowCode({
       {shown ? (
         <QrCode qr={shown.qr} label={`QR code for the address ${shown.address} and its pairing code`} />
       ) : (
-        <div className="sync-qr sync-qr-waiting" aria-hidden />
+        <div className={cn(styles.qr, styles.qrWaiting)} aria-hidden />
       )}
-      <div className="sync-pair-row">
+      <div className={cn(pairingStyles.pairRow)}>
         <div>
           <p className="t-small secondary">Address</p>
-          <p className="sync-value">{shown?.address ?? '…'}</p>
+          <p className={cn(styles.value)}>{shown?.address ?? '…'}</p>
         </div>
         <div>
           <p className="t-small secondary">Code</p>
-          <p className="sync-value" aria-live="polite">
+          <p className={cn(styles.value)} aria-live="polite">
             {shown ? groupCode(shown.code) : '…'}
           </p>
         </div>
       </div>
-      <p className="t-small secondary sync-or">{shown ? syncCopy.showCode.timeLeft(left) : '\u00a0'}</p>
-      <button type="button" className="text-button t-small secondary sync-center" disabled={!shown} onClick={onCopy}>
+      <p className="t-small secondary text-center">{shown ? syncCopy.showCode.timeLeft(left) : '\u00a0'}</p>
+      <button type="button" className="text-button t-small secondary self-center" disabled={!shown} onClick={onCopy}>
         {copied ? 'Copied' : 'Copy address and code'}
       </button>
       {cancel}
@@ -97,7 +109,13 @@ function QrCode({ qr, label }: { qr: Qr; label: string }) {
     }
   }
   return (
-    <svg className="sync-qr" viewBox={`0 0 ${side} ${side}`} role="img" aria-label={label} shapeRendering="crispEdges">
+    <svg
+      className={cn(styles.qr)}
+      viewBox={`0 0 ${side} ${side}`}
+      role="img"
+      aria-label={label}
+      shapeRendering="crispEdges"
+    >
       <rect width={side} height={side} fill="#fff" />
       <path d={path} fill="#000" />
     </svg>

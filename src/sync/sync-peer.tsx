@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { outlineButton } from '@/components/ui/controls.styles';
 import { syncCopy } from '@/copy/sync';
+import { cn } from '@/lib/cn';
 import { DATE_LOCALE } from '@/config/stats';
 import { FORGET_CONFIRM_MS } from '@/config/sync';
 import { useSyncStore } from '@/stores/sync';
@@ -39,19 +41,20 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
 
   const note = peerNote?.key === peer.key ? peerNote : null;
   return (
-    <div className="sync-peer">
+    // The device's row, then how the latest sync with it went.
+    <div className="flex flex-col gap-1">
       <div className="row-between">
         <div>
           <div className="t-default">{peer.name}</div>
           <div className="t-small secondary">{syncCopy.peer.pairedOn(day(peer.pairedAt))}</div>
           <PeerState peer={peer} />
         </div>
-        <div className="sync-peer-actions">
+        <div className="flex shrink-0 items-center gap-3">
           {/* Only the device that connects can start a sync; the other one waits for it. */}
           {peer.address != null && (
             <button
               type="button"
-              className="outline-button accent sync-small-button"
+              className={cn(outlineButton.base, outlineButton.accent, outlineButton.small)}
               disabled={busy}
               onClick={() => void syncWithPeer(peer)}
             >
@@ -70,14 +73,14 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
       </div>
       {note && (
         <p
-          className={note.kind === 'error' ? 't-small sync-error' : 't-small secondary'}
+          className={note.kind === 'error' ? 't-small text-danger' : 't-small secondary'}
           role={note.kind === 'error' ? 'alert' : 'status'}
         >
           {note.text}
         </p>
       )}
       {note?.reconnect && onReconnect && (
-        <button type="button" className="text-button t-small sync-link" onClick={onReconnect}>
+        <button type="button" className="text-button t-small text-accent" onClick={onReconnect}>
           Reconnect
         </button>
       )}

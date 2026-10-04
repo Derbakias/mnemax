@@ -1,6 +1,16 @@
 import { useState } from 'react';
 
+import { cn } from '@/lib/cn';
 import type { LogLine } from '@/sync/sync-messages';
+
+const styles = {
+  // Every step of the latest attempt, to find out why one failed: small code-font lines on the card grey,
+  // scrolling past 260px. Long words break anywhere, and the text can be selected to copy it.
+  lines: [
+    'm-0 max-h-[260px] list-none overflow-y-auto rounded-xl bg-background-element px-3 py-2.5',
+    'font-mono text-[12px]/[18px] wrap-anywhere select-text',
+  ],
+};
 
 /** The steps of the latest pairing or sync, hidden until asked for, with a way to copy them. */
 export function SyncLog({ start, lines, deviceName }: { start: number; lines: LogLine[]; deviceName?: string }) {
@@ -22,7 +32,7 @@ export function SyncLog({ start, lines, deviceName }: { start: number; lines: Lo
     }
   };
   return (
-    <div className="sync-log">
+    <div className="flex flex-col gap-1">
       <div className="row-between">
         <button type="button" className="text-button t-small secondary" onClick={() => setShown((s) => !s)}>
           {shown ? 'Hide sync logs' : lines.length > 0 ? `Sync logs (${lines.length})` : 'Sync logs'}
@@ -34,10 +44,10 @@ export function SyncLog({ start, lines, deviceName }: { start: number; lines: Lo
         )}
       </div>
       {shown && (
-        <ol className="sync-log-lines">
+        <ol className={cn(styles.lines)}>
           {lines.map((l, i) => (
             <li key={i}>
-              <span className="sync-log-time">{elapsed(l.at - start)}</span> {l.text}
+              <span className="secondary">{elapsed(l.at - start)}</span> {l.text}
             </li>
           ))}
         </ol>
