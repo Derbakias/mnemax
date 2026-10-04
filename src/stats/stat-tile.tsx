@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Icon, type IconName } from '@/components/ui/icon';
+import { panel } from '@/components/ui/surfaces.styles';
 import { cn } from '@/lib/cn';
 
 // A headline number: its icon in a blue bubble, the label under it, then the value. The label gets the tile's
@@ -17,9 +18,9 @@ const styles = {
     'min-[700px]:text-[24px] max-[400px]:text-[24px]',
   ],
   // Every tile keeps a line for the note under the value, so the four stay the same height. A size down from the
-  // label, so "▲ +0.06 in 7 days" stays on one line four tiles to a row. t-small's weight, written out: t-small's
-  // own size would win over these.
-  sub: 'secondary -mt-1 min-h-[18px] text-[13px]/[18px] font-medium whitespace-nowrap',
+  // label, so "▲ +0.06 in 7 days" stays on one line four tiles to a row, with text-small's weight written
+  // out.
+  sub: 'text-text-secondary -mt-1 min-h-[18px] text-[13px]/[18px] font-medium whitespace-nowrap',
 };
 
 /** A headline number, with an icon beside its label. */
@@ -35,12 +36,12 @@ export function StatTile({
   sub?: ReactNode;
 }) {
   return (
-    <div className={cn('panel', styles.tile)}>
+    <div className={cn(panel.base, styles.tile)}>
       <div className="flex min-w-0 flex-col items-start gap-2">
         <span className={cn(styles.icon)}>
           <Icon name={icon} size={18} />
         </span>
-        <span className="t-small secondary truncate">{label}</span>
+        <span className="text-small text-text-secondary truncate">{label}</span>
       </div>
       <span className={cn(styles.value)}>{value}</span>
       <span className={cn(styles.sub)}>{sub}</span>

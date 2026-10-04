@@ -44,6 +44,8 @@ const styles = {
     'pointer-events-none flex items-center justify-center',
     'bg-pause-veil text-light backdrop-blur-[14px]',
   ],
+  // The trial count under the HUD, in the code font.
+  count: 'min-w-[5ch] flex-none font-mono text-code leading-4 text-text-secondary tabular-nums',
 };
 
 /**
@@ -136,7 +138,7 @@ export function RoundView({
             on the count when the timer is off). A fixed height, counted in --stage-taken. */}
         <div className={cn('flex h-4 flex-none items-center gap-2', alignedToGrid)}>
           {/* Room for "20/20", so the bars don't move as the count grows. */}
-          <span className="t-code min-w-[5ch] flex-none leading-4 text-text-secondary tabular-nums" aria-hidden>
+          <span className={cn(styles.count)} aria-hidden>
             <span className="font-bold text-accent">{trial}</span>/{TRIALS_PER_ROUND}
           </span>
           {/* The progress and the trial timer touch, so they read as one bar in two colours: only the pair's
@@ -213,7 +215,7 @@ export function RoundView({
           />
           {state.paused && (
             <div className={cn(styles.overlay)}>
-              <span className="t-title">{playCopy.paused}</span>
+              <span className="text-title">{playCopy.paused}</span>
             </div>
           )}
         </div>

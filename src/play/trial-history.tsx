@@ -23,7 +23,7 @@ const styles = {
     // An outline with a gap, so it still shows around a chip that's the same blue.
     'data-[highlighted=true]:outline-2 data-[highlighted=true]:outline-offset-1 data-[highlighted=true]:outline-accent',
   ],
-  // The code font, as t-code gives it, at the arrows' own size. The centre box's dot is a small glyph, so it gets
+  // The code font, as font-mono text-code give it, at the arrows' own size. The centre box's dot is a small glyph, so it gets
   // a bigger size to look as heavy as the arrows (same line height, so the chip doesn't change).
   arrow: ['font-mono text-[17px] leading-5 font-medium', 'data-[dot=true]:text-[24px]'],
 };
@@ -87,7 +87,7 @@ export function TrialHistory({
                 {POSITION_ARROWS[trial.stimulus.position] ?? ''}
               </span>
             )}
-            {text && <span className="t-code">{text}</span>}
+            {text && <span className="font-mono text-code">{text}</span>}
           </div>
         );
       })}

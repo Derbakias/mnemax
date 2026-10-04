@@ -18,7 +18,11 @@ export function YearDropdown({
   onChange: (year: number) => void;
 }) {
   return (
-    <select className={cn('t-small', styles.select)} value={value} onChange={(e) => onChange(Number(e.target.value))}>
+    <select
+      className={cn('text-small', styles.select)}
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+    >
       {years.map((y) => (
         <option key={y} value={y}>
           {y}

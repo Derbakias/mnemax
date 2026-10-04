@@ -12,7 +12,7 @@ export const chipStyles = {
   base: [
     'inline-flex shrink-0 items-center gap-[clamp(3px,1vw,6px)] whitespace-nowrap',
     'rounded-full bg-background-element px-[clamp(6px,2.4vw,16px)] py-[clamp(7px,2.2vw,9px)]',
-    // The code font, as t-code gives it, but at a size that grows with the window.
+    // The code font, as font-mono text-code give it, but at a size that grows with the window.
     'font-mono font-medium text-[length:clamp(10.5px,3.3vw,14px)] leading-[1.3]',
   ],
   // Chips that do something when tapped: grey a shade darker under the mouse and while their panel is open.

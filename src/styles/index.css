@@ -1,10 +1,7 @@
-/* TODO: !important! Migrate everything to tailwind */
-
-/* Tailwind: its theme (the palette below) and its utility classes. Its base reset (Preflight) is left out
-   until the old CSS is gone, because it changes the look. */
-@layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
+/* Tailwind: its theme (the palette below), its base reset (Preflight: no browser margins, borders or list
+   bullets, and the like) and its utility classes. Our own plain element styles (@layer base, at the bottom)
+   come after the reset, so where both set something, ours wins. */
+@import 'tailwindcss';
 
 /* The palette: the one place the app's colours are set. src/lib/theme.ts reads them from here for the
    colours drawn in JS (the charts, accuracy colours). static: every value is always written out, even one
@@ -83,6 +80,27 @@
     'Spline Sans', Inter, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* The app's text sizes, each with its line height and weight: text-default, text-small and so on. Headings
+     (text-heading) are a step below text-subtitle, which is for big numbers. text-code keeps the line height
+     around it, and goes with font-mono. */
+  --text-default: 16px;
+  --text-default--line-height: 24px;
+  --text-default--font-weight: 500;
+  --text-small: 14px;
+  --text-small--line-height: 20px;
+  --text-small--font-weight: 500;
+  --text-subtitle: 24px;
+  --text-subtitle--line-height: 44px;
+  --text-subtitle--font-weight: 600;
+  --text-heading: 20px;
+  --text-heading--line-height: 32px;
+  --text-heading--font-weight: 600;
+  --text-title: 38px;
+  --text-title--line-height: 52px;
+  --text-title--font-weight: 600;
+  --text-code: 12px;
+  --text-code--font-weight: 500;
 }
 
 /* The grid loader's animations (src/components/ui/grid-loader.tsx). inline: the step one uses each cell's own
@@ -196,9 +214,9 @@
   }
 }
 
-/* Plain element styles. They sit in a layer because Tailwind's utilities do, and CSS outside any layer
-   always wins over CSS in one: left outside, these would beat a utility (p-2 on a button would do nothing).
-   The class styles below stay outside for now; they go as the components move to Tailwind. */
+/* Plain element styles, on top of Tailwind's reset. They sit in a layer because Tailwind's utilities do, and
+   CSS outside any layer always wins over CSS in one: left outside, these would beat a utility (p-2 on a button
+   would do nothing). */
 @layer base {
   :root {
     --tab-bar-height: 56px;
@@ -207,24 +225,21 @@
     color-scheme: light dark;
   }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
   html,
   body,
   #root {
     height: 100%;
-    margin: 0;
   }
 
   /* An app, not a page: no pinch or double-tap zoom (it also blew up the charts). Scrolling still works, and
      touch-action narrows down the tree, so nothing inside can turn zoom back on. The viewport meta says the
-     same for webviews that go by that. */
+     same for webviews that go by that.
+     Line spacing: Tailwind's reset spaces lines at 1.5 times the text size; here they keep the font's own
+     spacing, as before the reset. Much of the text, in many files, sets no line spacing of its own, so one
+     rule here is smaller and safer than one on each. */
   html {
     touch-action: pan-x pan-y;
+    line-height: normal;
   }
 
   body {
@@ -233,23 +248,12 @@
     font-family: var(--font-display);
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
     user-select: none;
     -webkit-user-select: none;
   }
 
-  button,
-  select,
-  input {
-    font: inherit;
-    color: inherit;
-  }
-
   button {
-    background: none;
-    border: none;
-    padding: 0;
     cursor: pointer;
     touch-action: manipulation;
   }
@@ -265,15 +269,6 @@
     outline-offset: 2px;
   }
 
-  h2,
-  p {
-    margin: 0;
-  }
-
-  [hidden] {
-    display: none !important;
-  }
-
   /* Scanning a QR code (src/sync/sync-scan.tsx): on a phone the camera shows behind the page, so while it's open
      the page clears its background and hides the app, leaving only the frame to aim with and Cancel. */
   html.scanning,
@@ -283,106 +278,4 @@
   html.scanning #root {
     visibility: hidden;
   }
-}
-
-/* ---------- Typography (ThemedText types) ---------- */
-
-.t-default {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 500;
-}
-.t-small {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-}
-.t-subtitle {
-  font-size: 24px;
-  line-height: 44px;
-  font-weight: 600;
-}
-/* Section and screen headings: a step below .t-subtitle, which stays for big numbers (stat cards etc.). */
-.t-heading {
-  font-size: 20px;
-  line-height: 32px;
-  font-weight: 600;
-}
-.t-title {
-  font-size: 38px;
-  line-height: 52px;
-  font-weight: 600;
-}
-.t-code {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-}
-.secondary {
-  color: var(--color-text-secondary);
-}
-.good {
-  color: var(--color-success);
-}
-.bad {
-  color: var(--color-danger);
-}
-
-/* ---------- Layout ---------- */
-
-.row-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-
-.card {
-  background: var(--color-background-element);
-  border-radius: 14px;
-}
-
-.stack-8 {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  gap: 8px;
-}
-.stack-10 {
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-  gap: 10px;
-}
-
-/* ---------- Stats ---------- */
-
-/* A raised panel: the Stats screen's cards, tables and charts. */
-.panel {
-  border-radius: 16px;
-  border: 1px solid var(--color-surface-border);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-surface);
-}
-.panel-pad {
-  padding: 14px;
-}
-@media (max-width: 399.98px) {
-  .panel-pad {
-    padding: 12px 10px;
-  }
-}
-
-.text-button {
-  padding: 4px 0;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }

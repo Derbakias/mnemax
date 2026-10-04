@@ -105,7 +105,7 @@ export function StartScreen({
               </>
             }
           >
-            <span className="t-small secondary">{playCopy.hud.nLevel.title}</span>
+            <span className="text-small text-text-secondary">{playCopy.hud.nLevel.title}</span>
             <Stepper value={settings.nLevel} min={MIN_N} max={MAX_N} onChange={setNLevel} />
           </HudDropdown>
           <SpeedChip speed={settings.speed} onSelect={setSpeed} />
@@ -121,9 +121,7 @@ export function StartScreen({
           </button>
         </div>
 
-        {/* t-small's size, but bolder: t-small's own weight would win over font-semibold, so its size is written
-            out here instead. */}
-        <p className="mt-1 text-center text-[14px]/5 font-semibold tracking-[0.02em] text-accent">
+        <p className="mt-1 text-center text-small font-semibold tracking-[0.02em] text-accent">
           {playCopy.start.streamsLabel}
         </p>
         <div className="grid grid-cols-[1fr_1fr] gap-3">
@@ -149,7 +147,7 @@ export function StartScreen({
                 <span className="flex text-text-secondary [transition:color_0.15s] motion-reduce:transition-none group-aria-pressed:text-accent">
                   <Icon name={STREAM_ICONS[stream]} size={28} />
                 </span>
-                <span className="t-small">{STREAM_LABELS[stream]}</span>
+                <span className="text-small">{STREAM_LABELS[stream]}</span>
               </button>
             );
           })}
@@ -160,14 +158,14 @@ export function StartScreen({
         </button>
         {/* One block, so the two lines sit together rather than getting the start screen's gap between them.
             Always there, only invisible outside tutorial mode, so turning it on doesn't push the results down. */}
-        <div className="t-small secondary text-center aria-hidden:invisible" aria-hidden={!tutorial}>
+        <div className="text-small text-text-secondary text-center aria-hidden:invisible" aria-hidden={!tutorial}>
           {playCopy.start.tutorialNote}
         </div>
       </div>
 
       {showLatest && (
         <section className={cn(styles.section)}>
-          <h2 className="t-heading">{playCopy.results.lastRound}</h2>
+          <h2 className="text-heading">{playCopy.results.lastRound}</h2>
           <RoundSummaryCard result={sessionRounds[0]} />
           <RoundDetailTable result={sessionRounds[0]} />
         </section>
@@ -175,7 +173,7 @@ export function StartScreen({
 
       {sessionRounds.length > 0 && (
         <section className={cn(styles.section)}>
-          <h2 className="t-heading">{playCopy.results.thisSession}</h2>
+          <h2 className="text-heading">{playCopy.results.thisSession}</h2>
           <RoundHistoryList
             rounds={showLatest ? sessionRounds.slice(1) : sessionRounds}
             emptyLabel={playCopy.results.sessionEmpty}

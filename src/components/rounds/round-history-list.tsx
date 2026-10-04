@@ -64,9 +64,11 @@ function RoundEntry({
   return (
     <div className="border-surface-border not-first:border-t">
       <button type="button" className={cn(styles.row)} aria-expanded={expanded} onClick={() => onToggle(round.id)}>
-        <span className="t-small min-w-0">
+        <span className="text-small min-w-0">
           {formatTimestamp(round.finishedAt)} · N={round.settings.nLevel}
-          {round.stopped && <span className="secondary"> {roundsCopy.history.stoppedAt(round.trials.length)}</span>}
+          {round.stopped && (
+            <span className="text-text-secondary"> {roundsCopy.history.stoppedAt(round.trials.length)}</span>
+          )}
         </span>
         <span className="inline-flex flex-none items-center gap-2">
           <RoundSummaryCard result={round} compact />
@@ -96,7 +98,7 @@ export const RoundHistoryList = memo(function RoundHistoryList({
   const [openId, setOpenId] = useState<string | null>(null);
   const toggle = useCallback((id: string) => setOpenId((open) => (open === id ? null : id)), []);
   if (rounds.length === 0) {
-    return <p className="t-small secondary">{emptyLabel ?? roundsCopy.history.empty}</p>;
+    return <p className="text-small text-text-secondary">{emptyLabel ?? roundsCopy.history.empty}</p>;
   }
   return (
     <>

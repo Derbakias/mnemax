@@ -15,7 +15,7 @@ import type { ChartZoom } from './zoom';
 export const chipStyles = {
   row: 'flex flex-wrap items-center gap-1.5',
   chip: [
-    // The code font, as t-code gives it, a size down.
+    // The code font, as font-mono text-code give it, a size down.
     'font-mono text-[11px] font-medium',
     'rounded-lg border border-transparent px-2.5 py-[5px]',
     'bg-background-element text-text-secondary [transition:background-color_0.15s,color_0.15s]',

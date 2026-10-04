@@ -174,7 +174,7 @@ export function ProgressChart({
   };
 
   return (
-    <div className="stack-10">
+    <div className="flex flex-col gap-2.5 self-stretch">
       <div className={cn(chipStyles.row)}>
         <FilterChip label="Accuracy" active={metric === 'accuracy'} onPress={() => setMetric('accuracy')} />
         <FilterChip label="Reaction time" active={metric === 'reaction'} onPress={() => setMetric('reaction')} />
@@ -195,7 +195,7 @@ export function ProgressChart({
           className="flex items-center justify-center self-stretch text-center"
           style={{ height: PROGRESS_CHART_HEIGHT }}
         >
-          <span className="t-small secondary">
+          <span className="text-small text-text-secondary">
             {metric === 'reaction' && points.length > 0 ? statsCopy.byMode.noReactionTimes : statsCopy.noRoundsInRange}
           </span>
         </div>
@@ -236,7 +236,7 @@ export function ProgressChart({
           <PerfectEstimateLabel estimate={rate.toPerfect} />
         )}
         {points.length >= RATE_MIN_ROUNDS && metric === 'reaction' && rate.speedMsPerHour != null && (
-          <span className={rate.speedMsPerHour <= 0 ? 't-small good' : 't-small bad'}>
+          <span className={rate.speedMsPerHour <= 0 ? 'text-small text-success' : 'text-small text-danger'}>
             {statsCopy.byMode.reactionTrend(`${rate.speedMsPerHour <= 0 ? '' : '+'}${Math.round(rate.speedMsPerHour)}`)}
           </span>
         )}
@@ -247,12 +247,12 @@ export function ProgressChart({
 
 function PerfectEstimateLabel({ estimate }: { estimate: PerfectEstimate }) {
   if (estimate.kind === 'reached') {
-    return <span className="t-small good">{statsCopy.byMode.reached}</span>;
+    return <span className="text-small text-success">{statsCopy.byMode.reached}</span>;
   }
   if (estimate.kind === 'noProgress') {
-    return <span className="t-small secondary">{statsCopy.byMode.noProgress}</span>;
+    return <span className="text-small text-text-secondary">{statsCopy.byMode.noProgress}</span>;
   }
-  return <span className="t-small good">{statsCopy.byMode.toPerfect(formatPlayTime(estimate.hours))}</span>;
+  return <span className="text-small text-success">{statsCopy.byMode.toPerfect(formatPlayTime(estimate.hours))}</span>;
 }
 
 /** Whole minutes under an hour, hours and minutes above. */

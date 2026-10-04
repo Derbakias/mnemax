@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 
 const styles = {
-  legend: 't-small secondary flex flex-wrap items-center justify-center gap-x-4 gap-y-1',
+  legend: 'text-small text-text-secondary flex flex-wrap items-center justify-center gap-x-4 gap-y-1',
   item: 'inline-flex items-center gap-1.5',
   toggle: [
     '-mx-1.5 -my-0.5 rounded-md px-1.5 py-0.5 hover:bg-background-element',

@@ -231,8 +231,7 @@ export function Pairing({
   const cancel = (
     <button
       type="button"
-      // A grey outline, with the secondary class's grey text.
-      className={cn(outlineButton.base, outlineButton.secondary, 'secondary')}
+      className={cn(outlineButton.base, outlineButton.secondary)}
       onClick={() => {
         note('Cancelled on this device.');
         end();

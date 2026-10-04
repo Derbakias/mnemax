@@ -27,7 +27,7 @@ const styles = {
   app: 'relative flex h-full flex-col pt-(--safe-top)',
   screen: [
     // relative: anything placed inside a screen stays inside it. Without it, the screen-reader-only text
-    // (.visually-hidden) was placed against the whole app, and stretched the page past the tab bar.
+    // (sr-only) was placed against the whole app, and stretched the page past the tab bar.
     'relative min-h-0 flex-1 overflow-y-auto',
     // Nothing (e.g. an open dropdown) ever scrolls a screen sideways.
     'overflow-x-hidden',

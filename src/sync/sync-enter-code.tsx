@@ -2,6 +2,7 @@ import type { ReactNode, SubmitEvent } from 'react';
 
 import { outlineButton, textField } from '@/components/ui/controls.styles';
 import { Icon } from '@/components/ui/icon';
+import { card } from '@/components/ui/surfaces.styles';
 import { syncCopy } from '@/copy/sync';
 import { cn } from '@/lib/cn';
 import { pairingStyles } from '@/sync/pairing.styles';
@@ -9,7 +10,7 @@ import { isPhone } from '@/sync/sync';
 import { CameraScan, ScanOverlay } from '@/sync/sync-scan';
 
 const styles = {
-  // A note a size down from t-small (t-small's weight, written out: t-small's own size would win over this).
+  // A note a size down from text-small, with its weight written out.
   note: 'text-[13px]/[18px] font-medium',
   // The room in the row is shared out by the longest each can be: 15 characters for an address, 11 for a code.
   field: 'flex min-w-0 flex-[15_1_0] flex-col gap-1 text-left last:grow-[11]',
@@ -20,8 +21,8 @@ const styles = {
     'w-full flex-none rounded-lg border bg-background px-1.5 py-2.5 font-mono text-[14px]/6',
     'focus:border-accent focus:outline-none',
   ],
-  // The × that closes the error, at its top right. `!`: the text-button class's own padding would win.
-  close: 'absolute top-0 right-0 flex p-px!',
+  // The × that closes the error, at its top right.
+  close: 'absolute top-0 right-0 flex p-px',
 };
 
 /**
@@ -64,12 +65,12 @@ export function EnterCode({
   cancel: ReactNode;
 }) {
   return (
-    <form className={cn('card', pairingStyles.card)} onSubmit={onSubmit}>
-      <ol className={cn('t-small secondary', pairingStyles.steps)}>
+    <form className={cn(card, pairingStyles.card)} onSubmit={onSubmit}>
+      <ol className={cn('text-small text-text-secondary', pairingStyles.steps)}>
         <li>{hint ?? syncCopy.pairing.stepShowCode}</li>
         <li>{syncCopy.pairing.stepScan}</li>
       </ol>
-      <p className={cn('secondary', styles.note)}>{syncCopy.pairing.ownCodeOnly}</p>
+      <p className={cn('text-text-secondary', styles.note)}>{syncCopy.pairing.ownCodeOnly}</p>
       <button
         type="button"
         className={cn(outlineButton.base, outlineButton.accent)}
@@ -78,10 +79,10 @@ export function EnterCode({
       >
         Scan QR code
       </button>
-      <p className="t-small secondary text-center">{syncCopy.pairing.orType}</p>
+      <p className="text-small text-text-secondary text-center">{syncCopy.pairing.orType}</p>
       <div className={cn(pairingStyles.pairRow)}>
         <label className={cn(styles.field)}>
-          <span className="t-small secondary">Address</span>
+          <span className="text-small text-text-secondary">Address</span>
           <input
             className={cn(textField, styles.input)}
             value={address}
@@ -95,7 +96,7 @@ export function EnterCode({
           />
         </label>
         <label className={cn(styles.field)}>
-          <span className="t-small secondary">Code</span>
+          <span className="text-small text-text-secondary">Code</span>
           <input
             className={cn(textField, styles.input)}
             value={code}
@@ -118,12 +119,12 @@ export function EnterCode({
       <div className="relative min-h-20" role="alert">
         {error && (
           <>
-            <p className="t-small pr-7 text-danger">
+            <p className="text-small pr-7 text-danger">
               <strong>{syncCopy.pairing.failedLead}</strong> {error}
             </p>
             <button
               type="button"
-              className={cn('text-button secondary', styles.close)}
+              className={cn('text-text-secondary', styles.close)}
               aria-label="Close the error"
               onClick={onCloseError}
             >

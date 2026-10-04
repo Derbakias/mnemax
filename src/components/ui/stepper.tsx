@@ -34,7 +34,7 @@ export function Stepper({ value, min, max, step = 1, disabled = false, onChange 
       >
         <Icon name="remove" size={20} />
       </button>
-      <span className="t-subtitle min-w-14 text-center">{value}</span>
+      <span className="text-subtitle min-w-14 text-center">{value}</span>
       <button
         type="button"
         className={cn(styles.button)}
