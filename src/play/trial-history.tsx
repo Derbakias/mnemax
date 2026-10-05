@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import { COLOR_PALETTE, COLOR_SHADES, GRID_CENTER_INDEX, POSITION_ARROWS } from '@/config/game';
 import type { TrialStimulus } from '@/game/types';
 import { cn } from '@/lib/cn';
+import { textOn } from '@/lib/text-on';
 
 const styles = {
   // One slot per trial from N back to the current one (--history-slots, set by RoundView), oldest on the left.
@@ -41,12 +42,6 @@ interface TrialHistoryProps {
   showColor: boolean;
   showNumbers: boolean;
   showLetters: boolean;
-}
-
-/** Dark text on the light palette colours (yellow and sky blue), white on the rest. */
-function textOn(hex: string): string {
-  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  return 0.299 * r + 0.587 * g + 0.114 * b > 170 ? '#000000' : '#ffffff';
 }
 
 // Tutorial chips above the grid, oldest on the left: each shows a trial in the grid's terms, its colour as the
