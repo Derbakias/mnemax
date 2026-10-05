@@ -32,7 +32,7 @@ export function YearDropdown({
   return (
     <div className={cn(styles.picker)}>
       <HudDropdown
-        label="Year"
+        label={`Year: ${value}`}
         chipClassName={styles.chip}
         chip={
           <>
@@ -53,7 +53,9 @@ export function YearDropdown({
                 data-on={y === value}
                 aria-current={y === value}
                 onClick={() => {
-                  onChange(y);
+                  if (y !== value) {
+                    onChange(y);
+                  }
                   close();
                 }}
               >
