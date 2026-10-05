@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import { COLOR_PALETTE, COLOR_SHADES, GRID_CELLS, NEUTRAL_COLOR, NEUTRAL_SHADE } from '@/config/game';
 import type { TrialStimulus } from '@/game/types';
 import { cn } from '@/lib/cn';
+import { textOn } from '@/lib/text-on';
 
 const styles = {
   // Square, so the cells are square: as big as the round's stage allows (--stage-grid, see RoundView). --cell is
@@ -35,7 +36,7 @@ const styles = {
     'motion-reduce:data-[lit=true]:transition-none',
   ],
   digit: [
-    'text-[length:calc(var(--cell)*0.6)] leading-none font-extrabold text-light',
+    'text-[length:calc(var(--cell)*0.6)] leading-none font-extrabold',
     '[text-shadow:var(--shadow-digit)]',
     'group-data-[lit=true]:[text-shadow:0_2px_4px_color-mix(in_srgb,var(--box-shade)_80%,transparent)]',
   ],
@@ -65,7 +66,12 @@ export function TrialGrid({ stimulus, visible, varyColor, showNumbers, showPosit
         data-lit={active && !!color}
         style={
           active && color
-            ? ({ backgroundColor: color, '--box-color': color, '--box-shade': shade } as CSSProperties)
+            ? ({
+                backgroundColor: color,
+                color: textOn(color),
+                '--box-color': color,
+                '--box-shade': shade,
+              } as CSSProperties)
             : undefined
         }
       >
