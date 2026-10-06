@@ -1,5 +1,3 @@
-// TODO: Needs test cases
-
 import { isTauri } from '@tauri-apps/api/core';
 
 import { checkRound } from '@/game/round-check';
