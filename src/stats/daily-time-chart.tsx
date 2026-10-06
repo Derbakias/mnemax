@@ -12,7 +12,7 @@ import { statsCopy } from '@/copy/stats';
 import type { RoundResult } from '@/game/types';
 import { dailyStats, startOfDay, type DayStats } from '@/stats/levels';
 import { rangeStart, useToday } from '@/stats/use-today';
-import { DATE_LOCALE } from '@/config/stats';
+import { formatDate, useDateStyle } from '@/lib/date-format';
 import { formatDuration } from '@/lib/format';
 import { useTheme } from '@/lib/theme';
 import { cn } from '@/lib/cn';
@@ -60,6 +60,7 @@ function trendLine(points: { x: number; y: number }[], at: number[]): (number | 
 /** `zoom` comes from the parent (`useChartZoom`), which shows the crosshair switch and Reset zoom in the section header. */
 export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: ChartZoom }) {
   const theme = useTheme();
+  const style = useDateStyle();
   const [rangeDays, setRangeDays] = useState<number | null>(30);
   const today = useToday();
 
@@ -171,12 +172,7 @@ export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: 
           if (!entry) {
             return null;
           }
-          const title = new Date(entry.day).toLocaleDateString(DATE_LOCALE, {
-            weekday: 'short',
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          });
+          const title = formatDate(entry.day, style, { weekday: true, year: true });
           const s = entry.stats;
           if (!s) {
             return { title, rows: [['Time played', 'none']] };
@@ -196,7 +192,7 @@ export function DailyTimeChart({ rounds, zoom }: { rounds: RoundResult[]; zoom: 
       ],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- chartKey: a reset rebuilds the chart, which needs fresh zoom state.
-  }, [days, theme, zoom.setZoomed, zoom.reset, zoom.chartKey]);
+  }, [days, theme, style, zoom.setZoomed, zoom.reset, zoom.chartKey]);
 
   return (
     <div className="flex flex-col gap-2.5 self-stretch">

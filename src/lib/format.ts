@@ -1,4 +1,6 @@
-import { COUNT_UNITS, DATE_LOCALE } from '@/config/stats';
+import { COUNT_UNITS } from '@/config/stats';
+import { currentDateStyle, formatDate } from '@/lib/date-format';
+import type { DateStyle } from '@/lib/prefs';
 
 export function formatDuration(ms: number): string {
   const totalSeconds = Math.round(ms / 1000);
@@ -33,7 +35,7 @@ export function formatCount(n: number): string {
   return String(n);
 }
 
-/** A day as "4 Oct", for the Stats screen's mode list. */
-export function shortDate(time: number): string {
-  return new Date(time).toLocaleDateString(DATE_LOCALE, { day: 'numeric', month: 'short' });
+/** A day without the year (19/09), for the Stats screen's mode list. */
+export function shortDate(time: number, style: DateStyle = currentDateStyle()): string {
+  return formatDate(time, style);
 }

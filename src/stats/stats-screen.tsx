@@ -8,7 +8,7 @@ import { GridLoader } from '@/components/ui/grid-loader';
 import { HudDropdown } from '@/components/ui/hud-dropdown';
 import { LevelChart } from '@/stats/level-chart';
 import { ModesTable } from '@/stats/modes-table';
-import { ModeBadge } from '@/stats/mode-badge';
+import { ModeBadge, ShortDate } from '@/stats/mode-badge';
 import { ProgressChart } from '@/stats/progress-chart';
 import { RoundHistoryList } from '@/components/rounds/round-history-list';
 import { Section } from '@/components/ui/section';
@@ -20,7 +20,7 @@ import type { RoundResult } from '@/game/types';
 import { levelHistory, levelSummary, modeOf, summarizeModes } from '@/stats/levels';
 import { useSettingsStore } from '@/stores/settings';
 import { aggregateStreams, collectionSummary } from '@/lib/stats';
-import { formatDuration, shortDate } from '@/lib/format';
+import { formatDuration } from '@/lib/format';
 import { clearRounds, loadRounds, onRoundsChanged } from '@/lib/storage';
 import { useSyncStore } from '@/stores/sync';
 import { accuracyColor, useTheme } from '@/lib/theme';
@@ -197,7 +197,7 @@ export function StatsScreen({ onReady }: { onReady?: () => void }) {
                     >
                       <ModeBadge mode={m.mode} aligned />
                       <span className="font-mono text-code text-text-secondary">
-                        {m.rounds.length} {m.rounds.length === 1 ? 'round' : 'rounds'} · {shortDate(m.lastPlayed)}
+                        {m.rounds.length} {m.rounds.length === 1 ? 'round' : 'rounds'} · <ShortDate ms={m.lastPlayed} />
                       </span>
                     </button>
                   ))}

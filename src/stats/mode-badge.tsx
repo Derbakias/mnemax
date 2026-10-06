@@ -4,6 +4,8 @@ import { SPEED_PRESETS } from '@/config/game';
 import { speedPreset } from '@/game/rules';
 import { STREAM_IDS, STREAM_LABELS } from '@/game/types';
 import type { Mode } from '@/stats/levels';
+import { useDateStyle } from '@/lib/date-format';
+import { shortDate } from '@/lib/format';
 import { cn } from '@/lib/cn';
 
 const styles = {
@@ -60,4 +62,9 @@ export function ModeBadge({ mode, aligned = false, className }: { mode: Mode; al
 export function modeLabel(mode: Mode): string {
   const streams = mode.streams.map((s) => STREAM_LABELS[s]).join(' + ');
   return `N=${mode.nLevel} · ${streams} · ${speedPreset(mode.speed).label}`;
+}
+
+/** A day without the year, in the chosen date format; draws again when that changes. */
+export function ShortDate({ ms }: { ms: number }) {
+  return <>{shortDate(ms, useDateStyle())}</>;
 }

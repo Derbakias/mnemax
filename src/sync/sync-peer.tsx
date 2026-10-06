@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { outlineButton } from '@/components/ui/controls.styles';
 import { syncCopy } from '@/copy/sync';
 import { cn } from '@/lib/cn';
-import { DATE_LOCALE } from '@/config/stats';
+import type { DateStyle } from '@/lib/prefs';
+import { formatDate, useDateStyle } from '@/lib/date-format';
 import { FORGET_CONFIRM_MS } from '@/config/sync';
 import { useSyncStore } from '@/stores/sync';
 import { forgetDevice, type SyncPeer } from '@/sync/sync';
@@ -19,6 +20,7 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
   const syncing = useSyncStore((s) => s.syncing);
   const syncWithPeer = useSyncStore((s) => s.syncWithPeer);
   const peerNote = useSyncStore((s) => s.peerNote);
+  const style = useDateStyle();
   const [confirming, setConfirming] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -46,7 +48,7 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
       <div className="flex items-center justify-between gap-2">
         <div>
           <div className="text-default">{peer.name}</div>
-          <div className="text-small text-text-secondary">{syncCopy.peer.pairedOn(day(peer.pairedAt))}</div>
+          <div className="text-small text-text-secondary">{syncCopy.peer.pairedOn(day(peer.pairedAt, style))}</div>
           <PeerState peer={peer} />
         </div>
         <div className="flex shrink-0 items-center gap-3">
@@ -90,9 +92,10 @@ export function PeerRow({ peer, busy, onReconnect }: { peer: SyncPeer; busy: boo
 
 /** When it last synced. */
 function PeerState({ peer }: { peer: SyncPeer }) {
+  const style = useDateStyle();
   let text = syncCopy.peer.notSynced;
   if (peer.lastSyncAt != null) {
-    text = syncCopy.peer.lastSynced(when(peer.lastSyncAt));
+    text = syncCopy.peer.lastSynced(when(peer.lastSyncAt, style));
   } else if (peer.address == null) {
     // The device that showed the code doesn't start syncs (it has no Sync button): the other one does.
     text = syncCopy.peer.notSyncedWaits;
@@ -100,10 +103,10 @@ function PeerState({ peer }: { peer: SyncPeer }) {
   return <div className="text-small text-text-secondary">{text}</div>;
 }
 
-function day(ms: number): string {
-  return new Date(ms).toLocaleDateString(DATE_LOCALE, { dateStyle: 'medium' });
+function day(ms: number, style: DateStyle): string {
+  return formatDate(ms, style, { year: true });
 }
 
-function when(ms: number): string {
-  return new Date(ms).toLocaleString(DATE_LOCALE, { dateStyle: 'medium', timeStyle: 'short' });
+function when(ms: number, style: DateStyle): string {
+  return formatDate(ms, style, { year: true, time: true });
 }

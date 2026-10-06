@@ -3,9 +3,10 @@ import { memo, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { YearDropdown } from './year-dropdown';
 import { statsCopy } from '@/copy/stats';
 import type { RoundResult } from '@/game/types';
-import { DATE_LOCALE } from '@/config/stats';
+import { formatDate, useDateStyle } from '@/lib/date-format';
 import { useTheme } from '@/lib/theme';
 import { cn } from '@/lib/cn';
+import type { DateStyle } from '@/lib/prefs';
 
 const styles = {
   // A day letter beside each row of boxes, as tall as a box. The code font, as font-mono text-code give it, a size down.
@@ -54,16 +55,9 @@ function levelOpacity(count: number): number {
   return 1;
 }
 
-// Made once: toLocaleDateString sets up a new formatter on every call, and every day of the year gets a label.
-const DAY_FORMAT = new Intl.DateTimeFormat(DATE_LOCALE, {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-});
-
-function formatDay(date: Date): string {
-  return DAY_FORMAT.format(date);
+// Built from numbers, not Intl: every day of the year gets a label.
+function formatDay(date: Date, style: DateStyle): string {
+  return formatDate(date.getTime(), style, { weekday: true, year: true });
 }
 
 /** The weeks of `year` up to the one holding `today` (all of them for a past year). */
@@ -89,6 +83,7 @@ function buildYearWeeks(year: number, today: Date): Date[][] {
 // Memoized: the Stats screen stays mounted and re-renders on every settings change, while its rounds don't.
 export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rounds: RoundResult[] }) {
   const theme = useTheme();
+  const style = useDateStyle();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
   // Only which day is picked (tap) or under the mouse; its label and count are read from the live data,
@@ -186,7 +181,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
                       key={key}
                       type="button"
                       className={cn(styles.cell)}
-                      aria-label={`${formatDay(day)}: ${count} rounds`}
+                      aria-label={`${formatDay(day, style)}: ${count} rounds`}
                       // Clicking pins the day; clicking the pinned day again unpins it.
                       onClick={() => setSelected((sel) => (sel?.key === key ? null : { key, date: day }))}
                       onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered({ key, date: day })}
@@ -208,7 +203,7 @@ export const ActivityCalendar = memo(function ActivityCalendar({ rounds }: { rou
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="text-small text-text-secondary">
           {shown
-            ? `${formatDay(shown.date)} · ${shownCount} ${shownCount === 1 ? 'round' : 'rounds'}`
+            ? `${formatDay(shown.date, style)} · ${shownCount} ${shownCount === 1 ? 'round' : 'rounds'}`
             : canHover
               ? statsCopy.activity.hoverHint
               : statsCopy.activity.tapHint}

@@ -5,8 +5,9 @@ import { OutcomeLegend, RoundDetailTable } from './round-detail-table';
 import { RoundSummaryCard } from './round-summary-card';
 import { roundsCopy } from '@/copy/rounds';
 import type { RoundResult } from '@/game/types';
-import { DATE_LOCALE } from '@/config/stats';
+import { formatDate, useDateStyle } from '@/lib/date-format';
 import { cn } from '@/lib/cn';
+import type { DateStyle } from '@/lib/prefs';
 
 const styles = {
   list: [
@@ -36,28 +37,20 @@ interface RoundHistoryListProps {
   legend?: boolean;
 }
 
-// Made once: toLocaleDateString and friends set up a new formatter on every call, which added up to most of
-// the time a long history took to draw.
-const DATE_FORMAT = new Intl.DateTimeFormat(DATE_LOCALE, {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
-const TIME_FORMAT = new Intl.DateTimeFormat(DATE_LOCALE, {
-  hour: '2-digit',
-  minute: '2-digit',
-});
-
-function formatTimestamp(finishedAt: number): string {
-  return `${DATE_FORMAT.format(finishedAt)}, ${TIME_FORMAT.format(finishedAt)}`;
+// Built from numbers, not Intl: toLocaleDateString and friends set up a new formatter on every call, which
+// added up to most of the time a long history took to draw.
+function formatTimestamp(finishedAt: number, style: DateStyle): string {
+  return formatDate(finishedAt, style, { year: true, time: true });
 }
 
 function RoundEntry({
   round,
+  style,
   expanded,
   onToggle,
 }: {
   round: RoundResult;
+  style: DateStyle;
   expanded: boolean;
   onToggle: (id: string) => void;
 }) {
@@ -65,7 +58,7 @@ function RoundEntry({
     <div className="border-surface-border not-first:border-t">
       <button type="button" className={cn(styles.row)} aria-expanded={expanded} onClick={() => onToggle(round.id)}>
         <span className="text-small min-w-0">
-          {formatTimestamp(round.finishedAt)} · N={round.settings.nLevel}
+          {formatTimestamp(round.finishedAt, style)} · N={round.settings.nLevel}
           {round.stopped && (
             <span className="text-text-secondary"> {roundsCopy.history.stoppedAt(round.trials.length)}</span>
           )}
@@ -95,6 +88,7 @@ export const RoundHistoryList = memo(function RoundHistoryList({
 }: RoundHistoryListProps) {
   // One round open at a time: opening another closes the last, so a long history never has many trial
   // tables drawn at once.
+  const style = useDateStyle();
   const [openId, setOpenId] = useState<string | null>(null);
   const toggle = useCallback((id: string) => setOpenId((open) => (open === id ? null : id)), []);
   if (rounds.length === 0) {
@@ -105,7 +99,7 @@ export const RoundHistoryList = memo(function RoundHistoryList({
       {legend && <OutcomeLegend inline />}
       <div className={cn(styles.list)} style={scrollHeight ? { maxHeight: scrollHeight } : undefined}>
         {rounds.map((round) => (
-          <RoundEntry key={round.id} round={round} expanded={round.id === openId} onToggle={toggle} />
+          <RoundEntry key={round.id} round={round} style={style} expanded={round.id === openId} onToggle={toggle} />
         ))}
       </div>
     </>

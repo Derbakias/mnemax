@@ -17,7 +17,7 @@ import {
 import { statsCopy } from '@/copy/stats';
 import type { RoundResult, StreamId } from '@/game/types';
 import { STREAM_LABELS } from '@/game/types';
-import { DATE_LOCALE } from '@/config/stats';
+import { formatDate, useDateStyle } from '@/lib/date-format';
 import { computeRoundPoints, exponentialAverage } from '@/lib/stats';
 import { improvementRate, type PerfectEstimate } from '@/stats/improvement';
 import { useTheme } from '@/lib/theme';
@@ -52,6 +52,7 @@ export function ProgressChart({
   zoom: ChartZoom;
 }) {
   const theme = useTheme();
+  const style = useDateStyle();
   const [metric, setMetric] = useState<Metric>('accuracy');
   const [days, setDays] = useState<number | null>(null);
   // Whole days ending today, like the time-played chart; it moves on at midnight.
@@ -133,13 +134,7 @@ export function ProgressChart({
           if (!point) {
             return null;
           }
-          const title = new Date(point.finishedAt).toLocaleString(DATE_LOCALE, {
-            weekday: 'short',
-            day: 'numeric',
-            month: 'short',
-            hour: '2-digit',
-            minute: '2-digit',
-          });
+          const title = formatDate(point.finishedAt, style, { weekday: true, time: true });
           return {
             title,
             // Row n is series n + 1 (round, avg, then the streams): hidden series are left out.
@@ -155,7 +150,20 @@ export function ProgressChart({
       ],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- chartKey: a reset rebuilds the chart, which needs fresh zoom state.
-  }, [theme, metric, unit, mainColor, points, streams, perRound, averages, zoom.setZoomed, zoom.reset, zoom.chartKey]);
+  }, [
+    theme,
+    style,
+    metric,
+    unit,
+    mainColor,
+    points,
+    streams,
+    perRound,
+    averages,
+    zoom.setZoomed,
+    zoom.reset,
+    zoom.chartKey,
+  ]);
 
   // Shown or hidden on the live chart (see UPlotChart), so toggling a stream doesn't rebuild it (or undo a zoom).
   const seriesShown = useMemo(

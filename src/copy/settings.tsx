@@ -55,6 +55,14 @@ export const settingsCopy = {
     /** Next to the number of minutes. */
     unit: 'minutes per day',
   },
+  dateFormat: {
+    title: 'Date format',
+    info: <p>The date format in the stats and in the round history. System picks your device's default format.</p>,
+    /** The first choice: the order your device's language uses. */
+    system: 'System',
+    /** How each order is written out; System shows the one it follows. */
+    styles: { dmy: 'DD/MM/YYYY', mdy: 'MM/DD/YYYY', ymd: 'YYYY-MM-DD' },
+  },
   tutorial: {
     title: 'Tutorial',
     info: (

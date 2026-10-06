@@ -1,4 +1,4 @@
-import { clampPrefs } from '../prefs';
+import { clampPrefs, resolveDateStyle } from '../prefs';
 import { DEFAULT_KEY_BINDINGS } from '@/config/ui';
 
 describe('clampPrefs key bindings', () => {
@@ -76,5 +76,49 @@ describe('clampPrefs auto sync', () => {
   it('only turns off for false', () => {
     expect(clampPrefs({ autoSync: false }).autoSync).toBe(false);
     expect(clampPrefs({ autoSync: 'no' as unknown as boolean }).autoSync).toBe(true);
+  });
+});
+
+describe('clampPrefs dateFormat', () => {
+  it('follows the system by default', () => {
+    expect(clampPrefs(null).dateFormat).toBe('system');
+  });
+
+  it('keeps system and the fixed orders', () => {
+    for (const ok of ['system', 'dmy', 'mdy', 'ymd'] as const) {
+      expect(clampPrefs({ dateFormat: ok }).dateFormat).toBe(ok);
+    }
+  });
+
+  it('falls back to system for anything else', () => {
+    for (const bad of [5, 'en-GB', 'DMY', '', null]) {
+      expect(clampPrefs({ dateFormat: bad as never }).dateFormat).toBe('system');
+    }
+  });
+});
+
+describe('resolveDateStyle', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('returns a fixed order as it is', () => {
+    expect(resolveDateStyle('mdy')).toBe('mdy');
+  });
+
+  it('reads the order of navigator.language for system', () => {
+    vi.stubGlobal('navigator', { language: 'en-US' });
+    expect(resolveDateStyle('system')).toBe('mdy');
+    vi.stubGlobal('navigator', { language: 'en-GB' });
+    expect(resolveDateStyle('system')).toBe('dmy');
+    vi.stubGlobal('navigator', { language: 'ja-JP' });
+    expect(resolveDateStyle('system')).toBe('ymd');
+  });
+
+  it('falls back to day first when the system has no usable language', () => {
+    vi.stubGlobal('navigator', undefined);
+    expect(resolveDateStyle('system')).toBe('dmy');
+    vi.stubGlobal('navigator', { language: 'not a locale!' });
+    expect(resolveDateStyle('system')).toBe('dmy');
+    vi.stubGlobal('navigator', { language: '' });
+    expect(resolveDateStyle('system')).toBe('dmy');
   });
 });

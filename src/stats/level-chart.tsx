@@ -10,8 +10,9 @@ import { tooltipPlugin } from '@/components/charts/tooltip';
 import { roundChartInteraction, type ChartZoom } from '@/components/charts/zoom';
 import { LEVEL_CHART_HEIGHT } from '@/config/charts';
 import { statsCopy } from '@/copy/stats';
-import { DATE_LOCALE, LEVEL_WINDOW } from '@/config/stats';
+import { LEVEL_WINDOW } from '@/config/stats';
 import { roundMode, type LevelPoint } from '@/stats/levels';
+import { formatDate, useDateStyle } from '@/lib/date-format';
 import { exponentialAverage } from '@/lib/stats';
 import { useTheme } from '@/lib/theme';
 import { rangeStart, useToday } from '@/stats/use-today';
@@ -24,6 +25,7 @@ import { rangeStart, useToday } from '@/stats/use-today';
  */
 export function LevelChart({ history: allHistory, zoom }: { history: LevelPoint[]; zoom: ChartZoom }) {
   const theme = useTheme();
+  const style = useDateStyle();
   const [days, setDays] = useState<number | null>(null);
   // Whole days ending today, like the time-played chart; it moves on at midnight.
   const since = rangeStart(useToday(), days);
@@ -79,13 +81,7 @@ export function LevelChart({ history: allHistory, zoom }: { history: LevelPoint[
           if (!point) {
             return null;
           }
-          const title = new Date(point.finishedAt).toLocaleString(DATE_LOCALE, {
-            weekday: 'short',
-            day: 'numeric',
-            month: 'short',
-            hour: '2-digit',
-            minute: '2-digit',
-          });
+          const title = formatDate(point.finishedAt, style, { weekday: true, time: true });
           return {
             title,
             rows: [
@@ -101,7 +97,7 @@ export function LevelChart({ history: allHistory, zoom }: { history: LevelPoint[
       ],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- chartKey: a reset rebuilds the chart, which needs fresh zoom state.
-  }, [history, trend, theme, zoom.setZoomed, zoom.reset, zoom.chartKey]);
+  }, [history, trend, theme, style, zoom.setZoomed, zoom.reset, zoom.chartKey]);
 
   return (
     <div className="flex flex-col gap-2 self-stretch">

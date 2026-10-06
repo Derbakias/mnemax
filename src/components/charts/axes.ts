@@ -1,7 +1,7 @@
 import uPlot from 'uplot';
 
 import { AXIS_FONT, AXIS_VALUE_PAD, DATE_LABEL_SPACE } from '@/config/charts';
-import { DATE_LOCALE } from '@/config/stats';
+import { currentDateStyle, formatDate, formatTime } from '@/lib/date-format';
 import type { Theme } from '@/lib/theme';
 
 /** Axis styling shared by all charts. */
@@ -71,16 +71,14 @@ export function roundDateAxis(theme: Theme, times: number[]): uPlot.Axis {
       return kept;
     },
     values: (_u, splits) => {
+      const style = currentDateStyle();
       const oneDay = splits.length > 1 && splits.every((x) => dayOf(x) === dayOf(splits[0]));
       return splits.map((x) => {
         const time = times[x - 1];
         if (time == null) {
           return '';
         }
-        const date = new Date(time);
-        return oneDay
-          ? date.toLocaleTimeString(DATE_LOCALE, { hour: '2-digit', minute: '2-digit' })
-          : date.toLocaleDateString(DATE_LOCALE, { month: 'short', day: 'numeric' });
+        return oneDay ? formatTime(time) : formatDate(time, style);
       });
     },
   });
@@ -122,7 +120,9 @@ export function dayDateAxis(theme: Theme): uPlot.Axis {
       }
       return kept;
     },
-    values: (_u, splits) =>
-      splits.map((x) => new Date(x * 1000).toLocaleDateString(DATE_LOCALE, { month: 'short', day: 'numeric' })),
+    values: (_u, splits) => {
+      const style = currentDateStyle();
+      return splits.map((x) => formatDate(x * 1000, style));
+    },
   });
 }
