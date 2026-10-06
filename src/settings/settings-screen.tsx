@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { DateFormatPicker } from '@/settings/date-format';
 import { KeyBindings } from '@/settings/key-bindings';
 import { LayoutPreview } from '@/settings/layout-preview';
 import { MatchSlider } from '@/settings/sliders';
@@ -236,6 +237,10 @@ export function SettingsScreen({ active }: { active: boolean }) {
           <KeyBindings keys={prefs.keyBindings} onChange={setKeyBinding} />
         </Section>
       )}
+
+      <Section title={settingsCopy.dateFormat.title} info={settingsCopy.dateFormat.info}>
+        <DateFormatPicker />
+      </Section>
 
       <Section title={settingsCopy.data.title} info={settingsCopy.data.info}>
         <div className="flex gap-2.5">

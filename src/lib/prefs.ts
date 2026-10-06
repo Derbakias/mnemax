@@ -4,13 +4,15 @@
 import type { StreamId } from '../game/types';
 import { STREAM_IDS } from '../game/types';
 import { DEFAULT_KEY_BINDINGS } from '@/config/ui';
-import { MAX_DAILY_TARGET_MINUTES, MIN_DAILY_TARGET_MINUTES } from '@/config/stats';
+import { DATE_STYLES, MAX_DAILY_TARGET_MINUTES, MIN_DAILY_TARGET_MINUTES } from '@/config/stats';
 
 // The answer buttons always sit under the grid: two per row, or one per row. (Earlier builds also had
 // columns beside the grid, 'right' and 'left'; those saved choices now read as 'grid'.)
 export type ButtonLayout = 'grid' | 'rows';
 
 const BUTTON_LAYOUTS: ButtonLayout[] = ['grid', 'rows'];
+
+export type DateStyle = (typeof DATE_STYLES)[number];
 
 export interface AppPrefs {
   buttonLayout: ButtonLayout;
@@ -29,6 +31,8 @@ export interface AppPrefs {
   tutorialSolution: boolean;
   /** Sync with paired devices by itself while the app is open (see src/sync/sync-auto.ts). */
   autoSync: boolean;
+  /** The order dates are written in; 'system' follows the order of navigator.language. */
+  dateFormat: 'system' | DateStyle;
 }
 
 const ARROW_LABELS: Record<string, string> = { ArrowLeft: '←', ArrowUp: '↑', ArrowRight: '→', ArrowDown: '↓' };
@@ -85,7 +89,30 @@ export function clampPrefs(raw: Partial<AppPrefs> | null | undefined): AppPrefs 
     tutorialHistory: raw?.tutorialHistory !== false || !tutorialSolution,
     tutorialSolution,
     autoSync: raw?.autoSync !== false,
+    dateFormat: DATE_STYLES.includes(raw?.dateFormat as DateStyle) ? (raw?.dateFormat as DateStyle) : 'system',
   };
+}
+
+/** The order dates are written in: the chosen one, or the one the system's language uses. */
+export function resolveDateStyle(pref: AppPrefs['dateFormat']): DateStyle {
+  if (pref !== 'system') {
+    return pref;
+  }
+  const language = typeof navigator === 'undefined' ? '' : navigator.language;
+  if (!language) {
+    return 'dmy';
+  }
+  try {
+    const parts = new Intl.DateTimeFormat(language).formatToParts(new Date(2026, 8, 19));
+    const order = parts
+      .map((part) => part.type)
+      .filter((type) => type === 'day' || type === 'month' || type === 'year')
+      .map((type) => type[0])
+      .join('');
+    return (DATE_STYLES as readonly string[]).includes(order) ? (order as DateStyle) : 'dmy';
+  } catch {
+    return 'dmy';
+  }
 }
 
 export function defaultPrefs(): AppPrefs {

@@ -20,6 +20,7 @@ interface SettingsState {
   setDailyTargetMinutes: (minutes: number) => void;
   setShowTrialTimer: (show: boolean) => void;
   setAutoSync: (on: boolean) => void;
+  setDateFormat: (format: AppPrefs['dateFormat']) => void;
   /** Turns a tutorial aid on or off; turning off the only one left on turns the other one on instead. */
   setTutorialAid: (aid: 'tutorialHistory' | 'tutorialSolution', on: boolean) => void;
   /** Assigns `key` to `stream`; a stream that already had that key takes over `stream`'s old one. */
@@ -69,6 +70,7 @@ export const useSettingsStore = create<SettingsState>()((set, get) => {
     setDailyTargetMinutes: (minutes) => applyPrefs(clampPrefs({ ...get().prefs, dailyTargetMinutes: minutes })),
     setShowTrialTimer: (show) => applyPrefs(clampPrefs({ ...get().prefs, showTrialTimer: show })),
     setAutoSync: (on) => applyPrefs(clampPrefs({ ...get().prefs, autoSync: on })),
+    setDateFormat: (format) => applyPrefs(clampPrefs({ ...get().prefs, dateFormat: format })),
     setTutorialAid: (aid, on) => {
       const next = { ...get().prefs, [aid]: on };
       // One always stays on, so switching off the last one hands over to the other.

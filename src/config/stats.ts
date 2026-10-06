@@ -2,12 +2,8 @@
 
 // Dates and counts
 
-/**
- * The language dates are written in, the same on every device whatever the system is set to: 1 Oct 2026,
- * 15:00.
- */
-// TODO: Add in the settings
-export const DATE_LOCALE = 'en-GB';
+/** The orders dates can be written in: day first, month first or year first. */
+export const DATE_STYLES = ['dmy', 'mdy', 'ymd'] as const;
 /** How big counts are shortened: 1.2K, 3M, 4B. */
 export const COUNT_UNITS: [suffix: string, size: number][] = [
   ['K', 1e3],
